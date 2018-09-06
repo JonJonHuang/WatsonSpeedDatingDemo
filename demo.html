@@ -96,21 +96,33 @@ var person2Responses = [
 <script>
 function sendMessage() {
   // clear user_input box
-  console.log("message sent");
+  var userInputText = document.getElementById("user_input").value;
+  console.log("message sent: " + userInputText);
   document.getElementById("user_input").value = "";
 
   // create new div for chat message
   var newDiv = document.createElement('div');
   newDiv.className = "container";
+
+  // create the avatar img
   var newImg = document.createElement('img');
   newImg.setAttribute("src", "./person1_avatar.png");
-  newImg.setAttribute("alt", "Avatar")
-  newImg.setAttribute("style", "width:100%")
+  newImg.setAttribute("alt", "Avatar");
+  newImg.setAttribute("class", "right");
+  newImg.setAttribute("style", "width:100%");
   newDiv.appendChild(newImg);
   
+  // create the paragraph
+  var newP = document.createElement('p')
+  newP.setAttribute("margin", "10px 0");
+  newP.appendChild(document.createTextNode(userInputText));
+  newDiv.appendChild(newP);
+
   var body = document.getElementsByClassName('chatMsgs')[0];
   body.appendChild(newDiv);
   
+  // wait for a bit
+  setTimeout(console.log("endofsleep"), 3000);
   
 }
 </script>

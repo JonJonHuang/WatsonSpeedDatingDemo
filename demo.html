@@ -5,6 +5,7 @@ https://www.w3schools.com/howto/howto_css_chat.asp
 -->
 <html>
 <head>
+<meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 body {
@@ -92,8 +93,31 @@ var person2Responses = [
 </head>
 <body>
 
+<script>
+function sendMessage() {
+  // clear user_input box
+  console.log("message sent");
+  document.getElementById("user_input").value = "";
+
+  // create new div for chat message
+  var newDiv = document.createElement('div');
+  newDiv.className = "container";
+  var newImg = document.createElement('img');
+  newImg.setAttribute("src", "./person1_avatar.png");
+  newImg.setAttribute("alt", "Avatar")
+  newImg.setAttribute("style", "width:100%")
+  newDiv.appendChild(newImg);
+  
+  var body = document.getElementsByClassName('chatMsgs')[0];
+  body.appendChild(newDiv);
+  
+  
+}
+</script>
+
 <h2>Chat Messages</h2>
 
+<div class="chatMsgs">
 <div class="container">
   <img src="./watson_avatar.png" alt="Avatar" style="width:100%;">
   <p>Hello. How are you today?</p>
@@ -117,9 +141,14 @@ var person2Responses = [
   <p>Nah, I dunno. Play soccer.. or learn more coding perhaps?</p>
   <span class="time-left">11:05</span>
 </div>
-
-<div class="chatbox">
-
 </div>
+
+<div class="chatbox container">
+  <input id="user_input" type="text" name="Your message:" size="64">
+  <br>
+  <button type="button" onclick="sendMessage()">Send</button>
+</div>
+
+
 </body>
 </html>

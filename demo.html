@@ -106,7 +106,7 @@ async function sendMessage() {
 
   // create new div for chat message
   var newDiv = document.createElement('div');
-  newDiv.className = "container";
+  newDiv.className = "container darker";
 
   // create the avatar img
   var newImg = document.createElement('img');
@@ -133,7 +133,26 @@ async function sendMessage() {
   console.log("counter value: " + globalCounter);
 
   // output Watson's response
+  // create Watson's div for chat message
+  var responseDiv = document.createElement('div');
+  responseDiv.className = "container";
 
+  // create Watson's avatar img
+  var responseImg = document.createElement('img');
+  responseImg.setAttribute("src", "./watson_avatar.png");
+  responseImg.setAttribute("alt", "Avatar");
+  responseImg.setAttribute("class", "left");
+  responseImg.setAttribute("style", "width:100%");
+  responseDiv.appendChild(responseImg);
+  
+  // create Watson's paragraph
+  var responseP = document.createElement('p')
+  responseP.setAttribute("margin", "10px 0");
+  responseP.appendChild(document.createTextNode(userInputText));
+  responseDiv.appendChild(responseP);
+
+  // put up Watson's new message
+  body.appendChild(responseDiv);
   
 }
 

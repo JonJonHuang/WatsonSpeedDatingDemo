@@ -58,6 +58,10 @@ body {
 }
 </style>
 <script>
+var scenarioNum = prompt();
+
+var globalCounter = 1;
+
 var watsonQuestions = [
     'Hello. How are you today?',
     "That's great to hear! First off, do you sleep early or late?",
@@ -118,12 +122,18 @@ async function sendMessage() {
   newP.appendChild(document.createTextNode(userInputText));
   newDiv.appendChild(newP);
 
+  // put up the user's new message
   var body = document.getElementsByClassName('chatMsgs')[0];
   body.appendChild(newDiv);
   
   // wait for a bit
-  await sleep(3000);
+  await sleep(500);
+  globalCounter = globalCounter + 1;
   console.log("endofsleep");
+  console.log("counter value: " + globalCounter);
+
+  // output Watson's response
+
   
 }
 

@@ -58,7 +58,23 @@ body {
 }
 </style>
 <script>
-var scenarioNum = prompt();
+var scenarioNum = parseInt(prompt());
+
+var avatar_img_src = "./person1_avatar.png";
+var watsonSolution = "Still working on finding a match for you...";
+switch(scenarioNum) {
+  case 1:
+    // avatar_img_src = "./person1_avatar.png";
+    break;
+  case  2:
+    avatar_img_src = "./person2_avatar.png";
+    watsonSolution = "I found a match! Person 1 seems to have a similar sleep schedule and lifestyle as you!";
+    break;
+  case  3:
+    avatar_img_src = "./person3_avatar.png";
+    watsonSolution = "Currently there are no people that match your preferences, but I'm still looking!";
+    break;
+}
 
 var globalCounter = 1;
 
@@ -86,7 +102,7 @@ var person2Responses = [
     "Awesome!"
 ];
 
-var person2Responses = [
+var person3Responses = [
     "Eh I'm okay.",
     'Lights off at 10pm sharp. No compromise.',
     "I would really prefer if you didn't.",
@@ -110,7 +126,7 @@ async function sendMessage() {
 
   // create the avatar img
   var newImg = document.createElement('img');
-  newImg.setAttribute("src", "./person1_avatar.png");
+  newImg.setAttribute("src", avatar_img_src);
   newImg.setAttribute("alt", "Avatar");
   newImg.setAttribute("class", "right");
   newImg.setAttribute("style", "width:100%");
@@ -128,9 +144,7 @@ async function sendMessage() {
   
   // wait for a bit
   await sleep(500);
-  globalCounter = globalCounter + 1;
   console.log("endofsleep");
-  console.log("counter value: " + globalCounter);
 
   // output Watson's response
   // create Watson's div for chat message
@@ -148,12 +162,23 @@ async function sendMessage() {
   // create Watson's paragraph
   var responseP = document.createElement('p')
   responseP.setAttribute("margin", "10px 0");
-  responseP.appendChild(document.createTextNode(userInputText));
+
+  var tempString = "";
+  if (globalCounter < 5) {
+    tempString = watsonQuestions[globalCounter];
+  } else {
+    tempString = watsonSolution;
+  }
+
+  responseP.appendChild(document.createTextNode(tempString));
   responseDiv.appendChild(responseP);
 
   // put up Watson's new message
   body.appendChild(responseDiv);
   
+  globalCounter = globalCounter + 1;
+  console.log("counter value: " + globalCounter);
+
 }
 
 function sleep(ms) {
@@ -171,7 +196,7 @@ function sleep(ms) {
   <span class="time-right">11:00</span>
 </div>
 
-<div class="container darker">
+<!-- <div class="container darker">
   <img src="./person1_avatar.png" alt="Avatar" class="right" style="width:100%;">
   <p>Hey! I'm fine. Thanks for asking!</p>
   <span class="time-left">11:01</span>
@@ -187,7 +212,7 @@ function sleep(ms) {
   <img src="./person1_avatar.png" alt="Avatar" class="right" style="width:100%;">
   <p>Nah, I dunno. Play soccer.. or learn more coding perhaps?</p>
   <span class="time-left">11:05</span>
-</div>
+</div> -->
 </div>
 
 <div class="chatbox container">

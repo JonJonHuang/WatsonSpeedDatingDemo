@@ -94,7 +94,7 @@ var person2Responses = [
 <body>
 
 <script>
-function sendMessage() {
+async function sendMessage() {
   // clear user_input box
   var userInputText = document.getElementById("user_input").value;
   console.log("message sent: " + userInputText);
@@ -122,9 +122,15 @@ function sendMessage() {
   body.appendChild(newDiv);
   
   // wait for a bit
-  setTimeout(console.log("endofsleep"), 3000);
+  await sleep(3000);
+  console.log("endofsleep");
   
 }
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 </script>
 
 <h2>Chat Messages</h2>

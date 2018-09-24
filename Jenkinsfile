@@ -4,7 +4,7 @@ pipeline {
     stage('Test') {
       steps {
         echo 'Test'
-        echo 'Pulling from GitHub'
+        node watsonwebapp/spec/specRunner.js
       }
     }
     stage('Merge') {

@@ -4,6 +4,7 @@ pipeline {
     stage('Test') {
       steps {
         echo 'Test'
+        echo 'Pulling from GitHub'
       }
     }
     stage('Merge') {

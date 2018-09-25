@@ -3,5 +3,10 @@ html
   head
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
+  #sidenav
+    a(href='/') Home
+    a(href='/conversation') Conversation with Watson
+    a(href='/personality') User Personality
   body
-    block content
+    #content
+      block content

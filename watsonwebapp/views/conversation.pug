@@ -1,0 +1,9 @@
+extends layout
+
+block content
+  script(type='text/javascript' src='/javascripts/conversationFunctions.js')
+  .chatMsgs
+  .container
+    input#user_input(type='text' name='Your message:' size='64')
+    br
+    button(type='button' onclick='button_send()') Send

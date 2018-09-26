@@ -7,7 +7,7 @@ pipeline {
     stage('Test') {
       steps {
         echo 'Test'
-        sh 'npm config ls'
+        bat 'npm config ls'
       }
     }
     stage('Merge') {

@@ -2,8 +2,9 @@ extends layout
 
 block content
   script(type='text/javascript' src='/javascripts/conversationFunctions.js')
+  h2 Conversation with Watson
   .chatMsgs
-  .container
+  .container.darker
     input#user_input(type='text' name='Your message:' size='64')
     br
     button(type='button' onclick='button_send()') Send

@@ -2,7 +2,7 @@ body {
   margin-left: 200px;
   padding: 0px 0px 0px 12px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-  max-width: 800px;
+  /* max-width: 800px; */
 }
 
 /* The sidebar menu */
@@ -38,6 +38,10 @@ body {
     .sidenav a {font-size: 18px;}
 }
 
+#content {
+    position: fixed;
+}
+
 /* The input message box */
 .container {
     border: 2px solid #dedede;
@@ -53,9 +57,17 @@ body {
     background-color: #ddd;
 }
 
+.chatMsgs {
+    bottom: 0px;
+    overflow-y: scroll;
+    position: relative;
+    height: 400px;
+    display: block;
+}
+
 /* TO-DO: make the user_input input box at the bottom of the webpage */
 #user_input {
-    float: bottom;
+    bottom: 0px;
 }
 
 .container img {

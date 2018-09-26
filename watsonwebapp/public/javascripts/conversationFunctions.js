@@ -1,22 +1,51 @@
+/*
+Constants
+TO-DO: refactor these variables to another configuration file?
+*/
 avatar_img_src = '/images/person1_avatar.png';
 watson_img_src = '/images/watson_avatar.png';
 
-function button_send() {
+/*
+This function runs when the user clicks the "Send" button.
+It will grab the message from the input text box (user_retrieve_message())
+then display that message into the chat logs (user_display_message())
+*/
+async function button_send() {
   var user_message = user_retrieve_message();
   if (user_message.length > 0) {
     user_display_message(user_message);
+    auto_scroll_chatMsgs();
+
+    // just for show
+    await sleep(500);
+
+    watson_message('Watson\'s message goes here');
+    auto_scroll_chatMsgs();
   }
-  watson_message('Watson\'s message goes here');
   return user_message;
 }
 
+function auto_scroll_chatMsgs() {
+  var chatMsgs = document.getElementsByClassName("chatMsgs")[0];
+  chatMsgs.scrollTop = chatMsgs.scrollHeight;  
+}
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+/*
+Returns the message and clears it from input text box
+*/
 function user_retrieve_message() {
   var userInputText = document.getElementById("user_input").value;
-  console.log("message sent: " + userInputText);
   document.getElementById("user_input").value = "";
   return userInputText;
 }
 
+/*
+Displays the input message into the chat logs
+*/
 function user_display_message(userInputText) {
   // create new div for chat message
   var newDiv = document.createElement('div');
@@ -41,6 +70,9 @@ function user_display_message(userInputText) {
   body.appendChild(newDiv);
 }
 
+/*
+This function currently just displays some text to be delivered by Watson
+*/
 function watson_message(watsonText) {
   // create div for Watson's message
   var responseDiv = document.createElement('div');
@@ -63,7 +95,6 @@ function watson_message(watsonText) {
   // put up Watson's new message
   var body = document.getElementsByClassName('chatMsgs')[0];
   body.appendChild(responseDiv);
-
 }
 
 

@@ -1,10 +1,21 @@
 body {
-  padding: 50px;
+  margin-left: 200px;
+  padding: 0px 0px 0px 12px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  /* max-width: 800px; */
 }
 
-a {
-  color: #00B7FF;
+/* The sidebar menu */
+#sidenav {
+    height: 100%; /* Full-height: remove this if you want "auto" height */
+    width: 200px; /* Set the width of the sidebar */
+    position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+    z-index: 1; /* Stay on top */
+    top: 0; /* Stay at the top */
+    left: 0;
+    background-color: #111; /* Black */
+    overflow-x: hidden; /* Disable horizontal scroll */
+    padding-top: 20px;
 }
 
 /* The navigation menu links */
@@ -30,7 +41,6 @@ a {
 #content {
     position: fixed;
     width: 900px;
-}
 
 /* The input message box */
 .container {
@@ -74,3 +84,8 @@ a {
     margin-left: 20px;
     margin-right:0;
 }
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> parent of e418dcf... Revert "Merge branch 'dev' into master"

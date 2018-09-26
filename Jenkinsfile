@@ -8,7 +8,7 @@ pipeline {
       steps {
         echo 'Test'
         dir ('watsonwebapp') {
-          powershell 'ls'
+          powershell 'npm run test'
         }
       }
     }

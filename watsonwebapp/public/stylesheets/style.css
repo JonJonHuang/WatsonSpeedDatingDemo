@@ -44,8 +44,13 @@ body {
     background-color: #f1f1f1;
     border-radius: 5px;
     padding: 10px;
-    margin: 10px 0;
+    margin: 10px 10px;
     min-height: 60px;
+}
+
+.darker {
+    border-color: #ccc;
+    background-color: #ddd;
 }
 
 /* TO-DO: make the user_input input box at the bottom of the webpage */

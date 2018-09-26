@@ -1,10 +1,13 @@
 pipeline {
   agent any
+
+  tools {nodejs "node"}
+
   stages {
     stage('Test') {
       steps {
         echo 'Test'
-        node watsonwebapp/spec/specRunner.js
+        sh 'npm config ls'
       }
     }
     stage('Merge') {

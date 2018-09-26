@@ -7,8 +7,8 @@ pipeline {
     stage('Test') {
       steps {
         echo 'Test'
-        bat 'cd watsonwebapp'
-        bat 'npm run test'
+        powershell 'cd watsonwebapp'
+        powershell 'npm run test'
       }
     }
     stage('Merge') {

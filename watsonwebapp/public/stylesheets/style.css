@@ -40,6 +40,7 @@ body {
 
 #content {
     position: fixed;
+    width: 900px;
 }
 
 /* The input message box */
@@ -62,6 +63,7 @@ body {
     overflow-y: scroll;
     position: relative;
     height: 400px;
+    /* width: 800px; */
     display: block;
 }
 

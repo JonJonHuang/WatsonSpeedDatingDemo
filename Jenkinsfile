@@ -8,7 +8,6 @@ pipeline {
       steps {
         echo 'Test'
         powershell 'cd watsonwebapp'
-        powershell 'npm run test'
       }
     }
     stage('Merge') {

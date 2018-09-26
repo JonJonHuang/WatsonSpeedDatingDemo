@@ -7,8 +7,9 @@ pipeline {
     stage('Test') {
       steps {
         echo 'Test'
-        dir 'watsonwebapp'
-        powershell 'ls'
+        dir ('watsonwebapp') {
+          powershell 'ls'
+        }
       }
     }
     stage('Merge') {

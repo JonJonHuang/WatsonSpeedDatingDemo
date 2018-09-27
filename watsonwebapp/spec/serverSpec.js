@@ -13,6 +13,6 @@ describe('Stand server', function() {
                 subprocess.kill();
                 done();
             });
-        }, 10000);
+        }, 2500);
     });
 });

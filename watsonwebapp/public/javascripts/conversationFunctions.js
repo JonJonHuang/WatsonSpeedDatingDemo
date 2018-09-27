@@ -5,6 +5,8 @@ TO-DO: refactor these variables to another configuration file?
 avatar_img_src = '/images/person1_avatar.png';
 watson_img_src = '/images/watson_avatar.png';
 
+var username = prompt('Enter your username')
+
 /*
 This function runs when the user clicks the "Send" button.
 It will grab the message from the input text box (user_retrieve_message())
@@ -15,9 +17,9 @@ async function button_send() {
   if (user_message.length > 0) {
     user_display_message(user_message);
     auto_scroll_chatMsgs();
-    $.post('', {text: user_message},
+    $.post('', {text: user_message, user: username},
       function(data, status, xhr) {
-        watson_message(data[0])
+        watson_message(data[0]);
         auto_scroll_chatMsgs();
       }
     );

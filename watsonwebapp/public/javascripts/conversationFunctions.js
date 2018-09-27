@@ -15,13 +15,20 @@ async function button_send() {
   if (user_message.length > 0) {
     user_display_message(user_message);
     auto_scroll_chatMsgs();
-
-    // just for show
-    await sleep(500);
-
-    watson_message('Watson\'s message goes here');
-    auto_scroll_chatMsgs();
+    $.post('', {text: user_message},
+      function(data, status, xhr) {
+        watson_message(data[0])
+        auto_scroll_chatMsgs();
+      }
+    );
   }
+
+  //   // just for show
+  //   await sleep(500);
+
+  //   watson_message('Watson\'s message goes here');
+  //   auto_scroll_chatMsgs();
+  // }
   return user_message;
 }
 
@@ -96,5 +103,3 @@ function watson_message(watsonText) {
   var body = document.getElementsByClassName('chatMsgs')[0];
   body.appendChild(responseDiv);
 }
-
-

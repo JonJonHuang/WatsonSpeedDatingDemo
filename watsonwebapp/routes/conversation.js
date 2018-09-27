@@ -1,5 +1,7 @@
 var express = require('express');
 var router = express.Router();
+
+// set up wrapper for Watson Assistant
 var AssistantV1 = require('watson-developer-cloud/assistant/v1')
 var watsonAssistant = new AssistantV1({
   version: '2018-09-20',

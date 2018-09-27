@@ -5,7 +5,7 @@ TO-DO: refactor these variables to another configuration file?
 avatar_img_src = '/images/person1_avatar.png';
 watson_img_src = '/images/watson_avatar.png';
 
-var username = prompt('Enter your username')
+var username = prompt('Enter your username');
 
 /*
 This function runs when the user clicks the "Send" button.
@@ -24,13 +24,6 @@ async function button_send() {
       }
     );
   }
-
-  //   // just for show
-  //   await sleep(500);
-
-  //   watson_message('Watson\'s message goes here');
-  //   auto_scroll_chatMsgs();
-  // }
   return user_message;
 }
 

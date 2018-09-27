@@ -5,12 +5,14 @@ describe('Stand server', function() {
     // TODO - dont assume in watsonwebapp dir, use Path library to find www
     var subprocess = childProcess.fork('bin/www');
     // TODO - race condition, test fails if it runs before subprocess
-    it('Server stood up', function(done) {
-        http.get('http://127.0.0.1:3000', function(res) {
-            expect(res).toBeTruthy();
-            expect(res.statusCode).toEqual(200);
-            subprocess.kill();
-            done();
+    setTimeout(function() {
+        it('Server stood up', function(done) {
+            http.get('http://127.0.0.1:3000', function(res) {
+                expect(res).toBeTruthy();
+                expect(res.statusCode).toEqual(200);
+                subprocess.kill();
+                done();
+            });
         });
-    });
+    }, 10000);
 });

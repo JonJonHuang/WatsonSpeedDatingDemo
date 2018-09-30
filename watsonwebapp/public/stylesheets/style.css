@@ -41,6 +41,7 @@ body {
 #content {
     position: fixed;
     width: 900px;
+}
 
 /* The input message box */
 .container {
@@ -84,8 +85,3 @@ body {
     margin-left: 20px;
     margin-right:0;
 }
-<<<<<<< HEAD
-=======
-
-
->>>>>>> parent of e418dcf... Revert "Merge branch 'dev' into master"

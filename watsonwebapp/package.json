@@ -3,7 +3,6 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www",
     "test": "node ./spec/specRunner.js"
   },
   "dependencies": {
@@ -14,6 +13,7 @@
     "jasmine": "^3.2.0",
     "morgan": "~1.9.0",
     "pug": "2.0.0-beta11",
-    "selenium-webdriver": "^4.0.0-alpha.1"
+    "selenium-webdriver": "^4.0.0-alpha.1",
+    "watson-developer-cloud": "^3.11.1"
   }
 }

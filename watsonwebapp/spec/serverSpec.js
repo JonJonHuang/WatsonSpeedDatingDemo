@@ -9,10 +9,12 @@ describe('Server', function() {
     var data;
     beforeEach(function(done) {
         subprocess = childProcess.fork('bin/www', [], {stdio: 'pipe'});
-        subprocess.stdout.on('data', function(chunk) {
+        var setData = function(chunk) {
             data = chunk.toString();
+            subprocess.stdout.removeListener('data', setData);
             done();
-        });
+        };
+        subprocess.stdout.on('data', setData);
     });
     // TODO - race condition, test fails if it runs before subprocess
     it('sends the correct success message', function(done) {

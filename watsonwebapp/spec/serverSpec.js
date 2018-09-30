@@ -26,6 +26,7 @@ describe('Server', function() {
     it('successfully stands', function(done) {
         match = successMessageRegex.exec(data);
         port = match ? Number(match[1]) : 3000;
+        console.log('Attempting to connect to', 'http://127.0.0.1:' + port);
         http.get('http://127.0.0.1:' + port, function(res) {
             expect(res).toBeTruthy();
             expect(res.statusCode).toEqual(200);

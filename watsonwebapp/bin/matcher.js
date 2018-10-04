@@ -49,6 +49,23 @@ var UserMatcher = class {
     }
     return completeGroups;
   }
+
+// TEMPORARY FIX FOR OUR MVP
+  findGenreMatches() {
+    var results = [];
+    for (let user of this.userProfiles) {
+      var user_to_compare = user;
+      for (let other_user of this.userProfiles) {
+        if (user_to_compare.username != other_user.username) {
+          if (user_to_compare.genre == other_user.genre) {
+            results.push("Pair: " + user_to_compare.username + ' and ' + other_user.username);
+          }
+        }
+      }
+    }
+    return results;
+    }
+
 };
 
 module.exports = UserMatcher;

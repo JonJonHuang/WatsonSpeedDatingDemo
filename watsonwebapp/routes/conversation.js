@@ -49,7 +49,11 @@ router.get('/get-groups', function(req, res, next) {
   //   function(err, watsonRes) {
   //   }
   // );
+  console.log("inside get-groups");
+
   var groups = matcher.findMatches(['genre'], 0);
+  // TEMPORARY FIX
+  groups = matcher.findGenreMatches();
   res.send(groups);
 });
 

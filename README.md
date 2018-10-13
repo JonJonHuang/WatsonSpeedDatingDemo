@@ -21,3 +21,11 @@ sudo apt-get install -y nodejs
 sudo npm install express-generator -g
 express --view=pug watsonwebapp
 ```
+
+### To set up Mongo database
+Go to the [MongoDB Community Server download page](https://www.mongodb.com/download-center?initial=true#community) and install. If you want to you can also install Compass (provides a GUI for MongoDB).
+
+Run
+```
+mongod.exe -dbpath ./watsonwebapp/data/db
+```

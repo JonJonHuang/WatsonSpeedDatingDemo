@@ -12,42 +12,50 @@ mongoose.connect(uri, (err) => {
 const userSchema = new Schema({
     email: {type: String, required: true, unique: true},
     username: {type: String, required: true},
-    pwHash: {type: String, required: true}
+    pwHash: {type: String, required: true},
+    messages: {type: Array, required: true, }
 }, {
     strict: true
 });
 const UserModel = mongoose.model('users', userSchema);
 
+/**
+ * 
+ * @param {*} email 
+ * @returns Promise<User>
+ */
 function getUser(email) {
     return UserModel.findOne({email: email});
 }
 
+/**
+ * 
+ * @param {*} email 
+ * @param {*} username 
+ * @param {*} password 
+ * @returns Promise<boolean> that resolves with whether the user was successfully created.
+ */
 function registerUser(email, username, password) {
-    getUser(email).then((user) => {
-        if (!user) {
-            const salt = bcrypt.genSalt((err, salt) => {
-                if (err) {
-                    // TODO - should notify the user that an error occured while creating their account
-                    console.error(err);
-                    return;
-                }
-                const hash = bcrypt.hash(password, salt, (err, hash) => {
-                    var newUser = new UserModel({
-                        email: email,
-                        username: username,
-                        pwHash: hash
-                    });
-                    newUser.save((err) => {
-                        if (err) {
-                            console.error(err);
-                            return;
-                        }
-                    });
+    return getUser(email).then((user) => {
+        if (user) {
+            //Dont do anything, user already exists
+            return false;
+        }
+        return bcrypt.genSalt().then((salt) => {
+            return bcrypt.hash(password, salt).then((hash) => {
+                var newUser = new UserModel({
+                    email: email,
+                    username: username,
+                    pwHash: hash
+                });
+                return newUser.save().then(() => {
+                    return true;
                 });
             });
-        } else {
-            //TODO - Dont do anything, user already exists
-        }
+        });
+    }, (err) => {
+        console.error(err);
+        return false;
     });
 }
 
@@ -55,20 +63,43 @@ function registerUser(email, username, password) {
  * 
  * @param {*} email 
  * @param {*} password 
- * @returns A Promise that resolves with a boolean value denoting whether the credentials match.
+ * @returns Promise<boolean> that resolves with whether the credentials match.
  */
 function validateUser(email, password) {
     return getUser(email).then((user) => {
         if (!user) {
             // TODO - fail the validation
-            return;
+            return false;
         }
         return bcrypt.compare(password, user.pwHash);
+    });
+}
+
+/**
+ * 
+ * @param {*} email 
+ * @param {*} message 
+ * @returns Promise<boolean> that resolves with if the user message was saved.
+ */
+function addUserMessage(email, message) {
+    return getUser(email).then((user) => {
+        if (!user) {
+            // User doesn't exist
+            return false;
+        }
+        user.messages.push(message);
+        user.save().then(() => {
+            return true;
+        });
+    }, (err) => {
+        console.error(err);
+        return false;
     });
 }
 
 module.exports = {
     getUser: getUser,
     registerUser: registerUser,
-    validateUser: validateUser
+    validateUser: validateUser,
+    addUserMessage: addUserMessage
 };

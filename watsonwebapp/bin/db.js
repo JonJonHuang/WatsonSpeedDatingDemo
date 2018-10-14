@@ -1,13 +1,13 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
-var bcrypt = require('bcryptjs');
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+const bcrypt = require('bcryptjs');
 
 // var uri = "mongodb://JHuang:watsonspeedfriending@watsonspeedfriending-shard-00-00-2njuo.mongodb.net:27017,watsonspeedfriending-shard-00-01-2njuo.mongodb.net:27017,watsonspeedfriending-shard-00-02-2njuo.mongodb.net:27017/test?ssl=true&replicaSet=WatsonSpeedFriending-shard-0&authSource=admin&retryWrites=true"
-var uri = "mongodb://localhost:27017";
-mongoose.connect(uri, (err) => {
-    if (err)
-        throw err;
-});
+const uri = "mongodb://localhost:27017";
+// mongoose.connect(uri, (err) => {
+//     if (err)
+//         throw err;
+// });
 
 const userSchema = new Schema({
     email: {type: String, required: true, unique: true},
@@ -19,12 +19,16 @@ const userSchema = new Schema({
 });
 const UserModel = mongoose.model('users', userSchema);
 
+async function connect(uri = uri) {
+    return mongoose.connect(uri)
+}
+
 /**
  * 
  * @param {*} email 
  * @returns Promise<User>
  */
-function getUser(email) {
+async function getUser(email) {
     return UserModel.findOne({email: email});
 }
 
@@ -35,28 +39,21 @@ function getUser(email) {
  * @param {*} password 
  * @returns Promise<boolean> that resolves with whether the user was successfully created.
  */
-function registerUser(email, username, password) {
-    return getUser(email).then((user) => {
-        if (user) {
-            //Dont do anything, user already exists
-            return false;
-        }
-        return bcrypt.genSalt().then((salt) => {
-            return bcrypt.hash(password, salt).then((hash) => {
-                var newUser = new UserModel({
-                    email: email,
-                    username: username,
-                    pwHash: hash
-                });
-                return newUser.save().then(() => {
-                    return true;
-                });
-            });
+async function registerUser(email, username, password) {
+    let user = await getUser(email);
+    if (!user) {
+        let salt = await bcrypt.genSalt();
+        let hash = await bcrypt.hash(password, salt);
+        let newUser = new UserModel({
+            email: email,
+            username: username,
+            pwHash: hash,
+            messages: []
         });
-    }, (err) => {
-        console.error(err);
-        return false;
-    });
+        await newUser.save();
+        return true;
+    }
+    return false;
 }
 
 /**
@@ -65,14 +62,12 @@ function registerUser(email, username, password) {
  * @param {*} password 
  * @returns Promise<boolean> that resolves with whether the credentials match.
  */
-function validateUser(email, password) {
-    return getUser(email).then((user) => {
-        if (!user) {
-            // TODO - fail the validation
-            return false;
-        }
+async function validateUser(email, password) {
+    let user = await getUser(email);
+    if (user) {
         return bcrypt.compare(password, user.pwHash);
-    });
+    }
+    return false;
 }
 
 /**
@@ -81,20 +76,14 @@ function validateUser(email, password) {
  * @param {*} message 
  * @returns Promise<boolean> that resolves with if the user message was saved.
  */
-function addUserMessage(email, message) {
-    return getUser(email).then((user) => {
-        if (!user) {
-            // User doesn't exist
-            return false;
-        }
+async function addUserMessage(email, message) {
+    let user = await getUser(email);
+    if (user) {
         user.messages.push(message);
-        user.save().then(() => {
-            return true;
-        });
-    }, (err) => {
-        console.error(err);
-        return false;
-    });
+        await user.save();
+        return true;
+    }
+    return false;
 }
 
 module.exports = {

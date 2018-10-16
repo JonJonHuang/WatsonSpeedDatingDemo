@@ -1,0 +1,5 @@
+{
+  "dev": {
+    "dbURI": "mongodb://localhost:27017"
+  }
+}

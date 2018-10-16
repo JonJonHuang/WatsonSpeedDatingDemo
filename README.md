@@ -27,5 +27,5 @@ Go to the [MongoDB Community Server download page](https://www.mongodb.com/downl
 
 Run
 ```
-mongod.exe -dbpath ./watsonwebapp/data/db
+mongod.exe -dbpath .../WatsonSpeedFriending/data/db
 ```

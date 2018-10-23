@@ -18,7 +18,7 @@ if (mongoose.connection.readyState === 0) {
  * @returns Promise<boolean> that resolves with whether the user was successfully created.
  */
 async function registerUser(email, username, password) {
-  let user = await getUser(email);
+  let user = await dbUtils.getUser(email);
   if (!user) {
     let salt = await bcrypt.genSalt();
     let hash = await bcrypt.hash(password, salt);
@@ -41,7 +41,7 @@ async function registerUser(email, username, password) {
  * @returns Promise<boolean> that resolves with whether the credentials match.
  */
 async function validateUser(email, password) {
-  let user = await getUser(email);
+  let user = await dbUtils.getUser(email);
   if (user) {
     return bcrypt.compare(password, user.pwHash);
   }

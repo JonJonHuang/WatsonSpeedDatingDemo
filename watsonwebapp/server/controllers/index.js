@@ -1,1 +1,1 @@
-module.exports.loginController = require('./loginController');
+module.exports.loginController = require('./LoginController');

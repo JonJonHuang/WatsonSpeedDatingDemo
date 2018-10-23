@@ -1,2 +1,3 @@
 /watsonwebapp/data/db/**
 /watsonwebapp/node_modules/**
+/data/db/**

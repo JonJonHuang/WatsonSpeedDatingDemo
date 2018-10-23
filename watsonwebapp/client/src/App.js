@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 // import logo from './logo.svg';
 import './App.css';
+import axios from 'axios';
 
 const DUMMY_DATA = [
   {
@@ -96,7 +97,6 @@ class ConversationApp extends Component {
     this.setState({
       current_input: e.target.value
     })
-    console.log("handleChangeXXX: " + this.state.current_input)
   }
   
   handleKeyPressXXX(e) {
@@ -107,17 +107,41 @@ class ConversationApp extends Component {
       console.log("handleKeyPressXXX: " + this.state.current_input)
       
       // SEND HTTP POST
+      this.sendPostRequest()
       
-      // UPDATE MESSAGELIST
-      
-      // update messages; clear current_input
-      const messages_copy = this.state.messages.slice();
-      messages_copy.push({senderId: "User", text: this.state.current_input})
-      this.setState({
-        messages: messages_copy,
-        current_input: ''
-      })
+      this.addMessageToList("User", this.state.current_input)
     }
+  }
+
+  async sendPostRequest() {
+    console.log("postrequest this.state.current_input: " + this.state.current_input)
+    const foo = {
+      user: "Jon",
+      text: this.state.current_input
+    };
+    
+    let response = await axios.post('http://localhost:3000/conversation', foo );
+    console.log(response);
+    this.addMessageToList('Watson', response.data[0]);
+      /*.then((response) => {
+        console.log(response)
+        this.addMessageToList("Watson", "dummytext")
+      })
+      .catch(function (error) {
+        console.log(error)
+      })*/
+    console.log("end of sendPostRequest")
+    
+  }
+
+  addMessageToList(senderId, text) {
+    // update messages; clear current_input
+    const messages_copy = this.state.messages.slice();
+    messages_copy.push({senderId: senderId, text: text})
+    this.setState({
+      messages: messages_copy,
+      current_input: ''
+    })
   }
 
 }

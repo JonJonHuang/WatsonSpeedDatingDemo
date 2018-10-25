@@ -23,6 +23,17 @@ async function connect(uri = uri) {
     return mongoose.connect(uri)
 }
 
+mongoose.connect(uri, () => {
+    console.log('Mongoose connection opened.');
+});
+
+process.on('SIGINT', () => {
+    mongoose.connection.close(() => {
+        console.log('Mongoose connection closed.');
+        process.exit(0);
+    });
+});
+
 /**
  * 
  * @param {*} email 

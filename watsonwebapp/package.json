@@ -19,5 +19,8 @@
     "pug": "2.0.0-beta11",
     "selenium-webdriver": "^4.0.0-alpha.1",
     "watson-developer-cloud": "^3.11.1"
+  },
+  "devDependencies": {
+    "jasmine-ajax": "^3.4.0"
   }
 }

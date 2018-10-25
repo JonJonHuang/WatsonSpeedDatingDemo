@@ -1,15 +1,12 @@
-var personality = require('./routes/personality');
+var personality = require('../routes/personality');
 
 describe('personality',function(){
-    var data;
-    var catagory;
-    beforeAll(function(done){
-        var setData = {
 
-        };
-        setData;
+    beforeAll(function(done){
+        done();
     })
     it('successfully receiving back from waston', function(done){
+        expect(personality).not.toBeNull();
         done();
     })
     afterAll(function(done){

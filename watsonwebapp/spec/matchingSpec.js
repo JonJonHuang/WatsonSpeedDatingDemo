@@ -1,20 +1,20 @@
-var personality = require('./personality');
-var dummyDataA = {
+var matcher = require('./matcher');
+var personA = {
 
 }
-var dummyDataB = {
+var personB = {
 
 }
-var dummyDataC = {
+var personC = {
 
 }
-var dummyDataD = {
+var personD = {
 
 }
-var dummyDataE = {
+var personE = {
 
 }
-var dummyDataF = {
+var personF = {
 
 }
 

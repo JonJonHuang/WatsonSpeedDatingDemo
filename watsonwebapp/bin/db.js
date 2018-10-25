@@ -13,7 +13,9 @@ const userSchema = new Schema({
     email: {type: String, required: true, unique: true},
     username: {type: String, required: true},
     pwHash: {type: String, required: true},
-    messages: {type: Array, required: true, }
+    messages: {type: Array, required: true, },
+    contextId: {type: String, default: null},
+    personality: {type: Array, required: true}
 }, {
     strict: true
 });
@@ -41,6 +43,10 @@ process.on('SIGINT', () => {
  */
 async function getUser(email) {
     return UserModel.findOne({email: email});
+}
+
+async function getAllUsers() {
+    return UserModel.find({});
 }
 
 /**
@@ -97,9 +103,21 @@ async function addUserMessage(email, message) {
     return false;
 }
 
+async function setContextId(email, contextId) {
+    let user = await getUser(email);
+    if (user) {
+        user.contextId = contextId;
+        await user.save();
+        return true;
+    }
+    return false;
+}
+
 module.exports = {
     getUser: getUser,
     registerUser: registerUser,
     validateUser: validateUser,
-    addUserMessage: addUserMessage
+    addUserMessage: addUserMessage,
+    setContextId: setContextId,
+    getAllUsers: getAllUsers
 };

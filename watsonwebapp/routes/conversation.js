@@ -10,6 +10,7 @@ var watsonAssistant = new AssistantV1({
   url: 'https://gateway.watsonplatform.net/assistant/api'
 });
 
+var db = require('../bin/db.js');
 var users = {};
 var UserMatcher = require('../bin/matcher.js');
 var matcher = new UserMatcher();
@@ -20,27 +21,26 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/', function(req, res, next) {
-  if (!users.hasOwnProperty(req.body.user)) {
-    matcher.addUser(req.body.user);
-    users[req.body.user] = {context: null};
-    var context = null;
-  } else {
-    var context = users[req.body.user].context;
-  }
-  watsonAssistant.message({
-    workspace_id: '9cc07323-047a-4ad5-894f-4052532d8e8a',
-    input: {
-      text: req.body.text
-    },
-    context: context
-  }, function(err, watsonRes) {
-    if (err) console.error(err);
-    for (let e of watsonRes.entities) {
-      matcher.addInterest(req.body.user, e.entity, e.value);
-    }
-    users[req.body.user].context = watsonRes.context;
-    res.send(watsonRes.output.text);
-  });
+  console.log("1");
+  db.getUser(req.body.emailAddr).then((user) => {
+    console.log("I'm in");
+    //console.log("CONTEXTID:" + user.contextId);
+    watsonAssistant.message({
+      workspace_id: '9cc07323-047a-4ad5-894f-4052532d8e8a',
+      input: {
+        text: req.body.text
+      },
+      context: user.contextId
+    }, function(err, watsonRes) {
+      if (err) console.error(err);
+      console.log("2");
+      db.setContextId(req.body.emailAddr, user.contextId);
+      db.addUserMessage(req.body.emailAddr, req.body.text);
+      console.log("3");
+      res.send(watsonRes.output.text);
+      matcher.addInput(req.body.user, req.body.text);
+    });
+  }).catch(() => {});
 });
 
 router.get('/get-groups', function(req, res, next) {

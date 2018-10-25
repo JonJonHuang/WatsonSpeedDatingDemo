@@ -32,6 +32,142 @@
 }
 */
 
-.title{
-  font-size: 24px
+:root {
+    --watson-blue: #3BA4CE;
+    --watson-green: #93BC58;
+}
+
+html {
+    height: 100%;
+    min-height: 100%;
+    max-height: 100%;
+    overflow: hidden;
+}
+
+body {
+    margin-left: 200px;
+    padding: 0px 0px 0px 12px;
+    font: 20px "Lucida Grande", Helvetica, Arial, sans-serif;
+    height: 100%;
+    min-height: 100%;
+    max-height: 100%;
+}
+
+#root {
+    bottom: 0px;
+    height: 100%;
+    min-height: 100%;
+    max-height: 100%;
+}
+
+.side-nav {
+    height: 100%; /* Full-height: remove this if you want "auto" height */
+    width: 200px; /* Set the width of the sidebar */
+    position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+    z-index: 1; /* Stay on top */
+    top: 0; /* Stay at the top */
+    left: 0;
+    background-color: #111; /* Black */
+    overflow-x: hidden; /* Disable horizontal scroll */
+    padding-top: 20px;
+}
+
+/* The navigation menu links */
+.side-nav a {
+    padding: 3px 8px 3px 18px;
+    text-decoration: none;
+    font-size: 24px;
+    color: #818181;
+    display: block;
+}
+
+/* When you mouse over the navigation links, change their color */
+.side-nav a:hover {
+    color: #f1f1f1;
+}
+
+.main-content {
+    height: 100%;
+    min-height: 100%;
+    max-height: 100%;
+    position: relative;
+    width: 100%;
+    bottom: 0px;
+    display: flex;
+    flex-direction: column;
+}
+
+.title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #D3D3D3;
+    background: #000000;
+    margin: 24px 0px 24px 0px;
+    padding: 0;
+    text-align: center;
+    font-size: 24px;
+    flex: none;
+}
+
+.title p {
+    color: #000;
+}
+
+.message-list {
+    overflow-y: scroll;
+    /* height: 400px; */
+    /* width: 800px; */
+    display: block;
+    flex: auto;
+    margin-bottom: 10px;
+}
+
+.send-message-form {
+    bottom: 0px;
+    position: relative;
+    flex: none;
+    left:0px;
+    right: 0px;
+    height: 20px;
+}
+
+.message-item {
+    margin-bottom: 6px;
+    
+}
+
+.message-item .message-sender {
+    font-size: 11px;
+    color: #808080;
+}
+
+.message-text {
+    font-size: 24px;
+    border-radius: 12px;
+    padding: 8px;
+    margin: 0px;
+}
+
+.message-text p {
+    align: right;
+}
+
+.message-item.color {
+    right: 0px;
+    position: relative;
+}
+
+.message-item.plain {
+    float: left;
+    width: 100%;
+}
+
+.message-item.color .message-text {
+    background: var(--watson-blue);
+}
+
+.message-item.plain .message-text {
+    display: inline-block;
+    background: #f0f0f0;
 }

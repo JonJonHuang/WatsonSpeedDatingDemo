@@ -1,2 +1,4 @@
 /watsonwebapp/data/db/**
+/data/db/**
 /watsonwebapp/node_modules/**
+.vscode/**

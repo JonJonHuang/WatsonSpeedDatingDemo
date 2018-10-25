@@ -4,19 +4,26 @@ import React, { Component } from 'react';
 import './App.css';
 import axios from 'axios';
 
+import LoginForm from './LoginPage';
+
 const DUMMY_DATA = [
   {
     senderId: "Watson",
     text: "Hello, I'm Watson. How can I help you today?"
   }
-]
+];
 
 class MainApp extends Component {
   constructor() {
     super()
     this.state={
       page: 1,
-      messages: DUMMY_DATA
+      messages: DUMMY_DATA,
+      auth: false
+    };
+
+    if (localStorage.wsfEmail) {
+      this.checkAuth(localStorage.wsfEmail);  
     }
     this.handleChangeInMessages = this.handleChangeInMessages.bind(this)
   }
@@ -33,6 +40,9 @@ class MainApp extends Component {
       case 3:
         appToRender = <PersonalityApp />
         break;
+      case 4:
+        appToRender = <LoginForm checkAuth={this.checkAuth} />;
+        break;
       default:
         appToRender = <HomeApp />
     }
@@ -44,6 +54,8 @@ class MainApp extends Component {
           <a onClick={() => this.setState({page: 2})} >Conversation with Watson</a>
           <br/>
           <a onClick={() => this.setState({page: 3})} >Personality and Matches</a>
+          <br/>
+          <a onClick={() => this.setState({page: 4})} >Login</a>
         </div>
         <div className="main-content">
           {appToRender}
@@ -58,6 +70,25 @@ class MainApp extends Component {
     this.setState({
       messages: e.target.value
     })
+  }
+
+  /**
+   * Asks the Express server whether this user is logged in or not. If so, then updates the state to reflect that.
+   */
+  checkAuth = async (email) => {
+    if (email) {
+      let response = await axios.post('/auth-check', {email: email});
+      if (response.body.success) {
+        let newState = {...this.state, auth: true};
+        this.setState(newState);
+      }
+    }
+  }
+
+  setAuth = (authStatus, email) => {
+    let newState = {...this.state, auth: authStatus};
+    localStorage.wsfEmail = email;
+    this.setState(newState);
   }
 
 }
@@ -114,7 +145,8 @@ class ConversationApp extends Component {
       user: "Jon",
       text: this.state.current_input
     };
-    let response = await axios.post('http://localhost:3000/conversation', foo );
+    let response = await axios.post('/conversation', foo );
+    console.log(response);
     this.addMessageToList('Watson', response.data[0]);
   }
 

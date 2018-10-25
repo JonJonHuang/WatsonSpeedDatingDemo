@@ -166,13 +166,8 @@ class ConversationApp extends Component {
       text: this.state.current_input
     };
     
-<<<<<<< HEAD
     let response = await axios.post('/conversation', foo );
     console.log(response);
-=======
-    let response = await axios.post('http://localhost:3000/conversation', foo );
-    // console.log(response);
->>>>>>> refs/remotes/origin/dev2
     this.addMessageToList('Watson', response.data[0]);
     // console.log("end of sendPostRequest")
     

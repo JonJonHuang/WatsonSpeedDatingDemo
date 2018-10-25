@@ -4,18 +4,25 @@ import ReactDOM from 'react-dom';
 import './App.css';
 import axios from 'axios';
 
+import LoginForm from './LoginPage';
+
 const DUMMY_DATA = [
   {
     senderId: "Watson",
     text: "Hello, I'm Watson. How can I help you today?"
   }
-]
+];
 
 class MainApp extends Component {
   constructor() {
     super()
     this.state={
-      page: 1
+      page: 1,
+      auth: false
+    };
+
+    if (localStorage.wsfEmail) {
+      this.checkAuth(localStorage.wsfEmail);  
     }
   }
   
@@ -23,16 +30,19 @@ class MainApp extends Component {
     var dummy = " "
     switch(this.state.page) {
       case 1:
-        dummy = <HomeApp />
+        dummy = <HomeApp />;
         break;
       case 2:
-        dummy = <ConversationApp />
+        dummy = <ConversationApp />;
         break
       case 3:
-        dummy = <PersonalityApp />
+        dummy = <PersonalityApp />;
+        break;
+      case 4:
+        dummy = <LoginForm checkAuth={this.checkAuth} />;
         break;
       default:
-        dummy = <HomeApp />
+        dummy = <HomeApp />;
     }
     return (
       <>
@@ -42,11 +52,33 @@ class MainApp extends Component {
           <button onClick={() => this.setState({page: 2})} >Conversation with Watson</button>
           <br/>
           <button onClick={() => this.setState({page: 3})} >Personality and Matches</button>
+          <br/>
+          <button onClick={() => this.setState({page: 4})} >Login</button>
         </div>
         {dummy}
       </>
-    )
+    );
   }
+
+  /**
+   * Asks the Express server whether this user is logged in or not. If so, then updates the state to reflect that.
+   */
+  checkAuth = async (email) => {
+    if (email) {
+      let response = await axios.post('/auth-check', {email: email});
+      if (response.body.success) {
+        let newState = {...this.state, auth: true};
+        this.setState(newState);
+      }
+    }
+  }
+
+  setAuth = (authStatus, email) => {
+    let newState = {...this.state, auth: authStatus};
+    localStorage.wsfEmail = email;
+    this.setState(newState);
+  }
+
 }
 
 function SideNav() {
@@ -120,7 +152,7 @@ class ConversationApp extends Component {
       text: this.state.current_input
     };
     
-    let response = await axios.post('http://localhost:3000/conversation', foo );
+    let response = await axios.post('/conversation', foo );
     console.log(response);
     this.addMessageToList('Watson', response.data[0]);
       /*.then((response) => {

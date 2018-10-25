@@ -7,8 +7,11 @@ router.post('/', async (req, res, next) => {
   let success = await dbUtils.validateUser(req.body.email, req.body.password);
   if (success) {
     req.session.loggedIn = true;
+    req.session.userEmail = req.body.email;
+    res.send({success: success, username: username});
+  } else {
+    res.send({success: success, username: username});
   }
-  res.send({success: success});
 });
 
 module.exports = router;

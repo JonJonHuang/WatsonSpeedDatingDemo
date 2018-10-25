@@ -19,7 +19,8 @@ class MainApp extends Component {
     this.state={
       page: 1,
       messages: DUMMY_DATA,
-      auth: false
+      auth: false,
+      username: ''
     };
 
     if (localStorage.wsfEmail) {
@@ -77,16 +78,17 @@ class MainApp extends Component {
    */
   checkAuth = async (email) => {
     if (email) {
-      let response = await axios.post('/auth-check', {email: email});
+      let response = await axios.post('/check-auth', {email: email});
       if (response.body.success) {
-        let newState = {...this.state, auth: true};
-        this.setState(newState);
+        this.setAuth(true, email, response.body.username);
+      } else {
+        this.setAuth(false, '', '')
       }
     }
   }
 
-  setAuth = (authStatus, email) => {
-    let newState = {...this.state, auth: authStatus};
+  setAuth = (authStatus, email, username) => {
+    let newState = {...this.state, auth: authStatus, username: username};
     localStorage.wsfEmail = email;
     this.setState(newState);
   }

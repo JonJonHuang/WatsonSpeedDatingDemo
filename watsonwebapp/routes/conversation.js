@@ -12,8 +12,6 @@ var watsonAssistant = new AssistantV1({
 
 var db = require('../bin/db.js');
 var users = {};
-var UserMatcher = require('../bin/matcher.js');
-var matcher = new UserMatcher();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -21,9 +19,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/', function(req, res, next) {
-  console.log("1");
-  db.getUser(req.body.emailAddr).then((user) => {
-    console.log("I'm in");
+  db.getUser(req.body.user).then((user) => {
     //console.log("CONTEXTID:" + user.contextId);
     watsonAssistant.message({
       workspace_id: '9cc07323-047a-4ad5-894f-4052532d8e8a',
@@ -38,9 +34,8 @@ router.post('/', function(req, res, next) {
       db.addUserMessage(req.body.emailAddr, req.body.text);
       console.log("3");
       res.send(watsonRes.output.text);
-      matcher.addInput(req.body.user, req.body.text);
     });
-  }).catch(() => {});
+  });
 });
 
 router.get('/get-groups', function(req, res, next) {

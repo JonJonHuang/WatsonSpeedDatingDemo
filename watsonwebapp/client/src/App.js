@@ -144,7 +144,7 @@ class ConversationApp extends Component {
   async sendPostRequest() {
     // TODO: change the user from "Jon" to the logged-in user
     const foo = {
-      user: "Jon",
+      user: "jon@jon.com",
       text: this.state.current_input
     };
     let response = await axios.post('/conversation', foo );

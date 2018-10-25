@@ -13,7 +13,7 @@ const userSchema = new Schema({
     email: {type: String, required: true, unique: true},
     username: {type: String, required: true},
     pwHash: {type: String, required: true},
-    messages: {type: Array, required: true, },
+    messages: {type: Array, required: true},
     contextId: {type: String, default: null},
     personality: {type: Array, required: true}
 }, {
@@ -69,7 +69,8 @@ async function registerUser(email, username, password) {
             email: email,
             username: username,
             pwHash: hash,
-            messages: []
+            messages: [],
+            personality: []
         });
         await newUser.save();
         return true;

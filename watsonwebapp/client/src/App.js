@@ -43,7 +43,7 @@ class MainApp extends Component {
         appToRender = <PersonalityApp />
         break;
       case 4:
-        appToRender = <LoginForm setAuth={this.setAuth} />;
+    appToRender = (<><LoginForm setAuth={this.setAuth} /><br /><p>Current user: {this.state.username}</p></>);
         break;
       default:
         appToRender = <HomeApp />
@@ -79,8 +79,8 @@ class MainApp extends Component {
    */
   checkAuth = async (email) => {
     let response = await axios.post('/check-auth', {email: email});
-    if (response.body.success) {
-      this.setAuth(true, email, response.body.username);
+    if (response.data.success) {
+      this.setAuth(true, email, response.data.username);
     } else {
       this.setAuth(false, '', '')
     }

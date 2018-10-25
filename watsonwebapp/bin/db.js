@@ -25,8 +25,12 @@ async function connect(uri = uri) {
     return mongoose.connect(uri)
 }
 
-mongoose.connect(uri, () => {
+mongoose.connect(uri).then(() => {
     console.log('Mongoose connection opened.');
+}, (reason) => {
+    console.error(reason);
+}).catch((err) => {
+    throw err;
 });
 
 process.on('SIGINT', () => {

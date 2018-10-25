@@ -1,4 +1,4 @@
-var personality = require('./personality');
+var personality = require('./routes/personality');
 
 describe('personality',function(){
     var data;
@@ -10,9 +10,6 @@ describe('personality',function(){
         setData;
     })
     it('successfully receiving back from waston', function(done){
-        done();
-    })
-    it('there is no warning', function(done){
         done();
     })
     afterAll(function(done){

@@ -1,4 +1,4 @@
-var matcher = require('./matcher');
+var matcher = require('./bin/matcher');
 var personA = {
 
 }

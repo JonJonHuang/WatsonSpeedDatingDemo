@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 // import logo from './logo.svg';
 import './App.css';
 import axios from 'axios';
+import posed from 'react-pose';
 
 import LoginForm from './LoginPage';
 
@@ -13,17 +14,153 @@ const DUMMY_DATA = [
   }
 ];
 
+const PERSONALITIES_DEFAULT = [
+  {
+    personality: 'Openness',
+    percentage: 43
+  },
+  {
+    personality: 'Conscientiousness',
+    percentage: 80
+  },
+  {
+    personality: 'Extraversion',
+    percentage: 24
+  },
+  {
+    personality: 'Agreeableness',
+    percentage: 59
+  },
+  {
+    personality: 'Emotional range',
+    percentage: 71
+  },
+  {
+    personality: 'Desire for Challenge',
+    percentage: 66
+  },
+  {
+    personality: 'Desire for Closeness',
+    percentage: 78
+  },
+  {
+    personality: 'Conservation, Value',
+    percentage: 32
+  },
+  {
+    personality: 'Curiosity',
+    percentage: 23
+  },
+  {
+    personality: 'Harmony',
+    percentage: 69
+  },
+  {
+    personality: 'Stability',
+    percentage: 72
+  },
+  {
+    personality: 'Structure',
+    percentage: 75
+  },
+  {
+    personality: 'Excitement',
+    percentage: 24
+  },
+  {
+    personality: 'Open to Change',
+    percentage: 46
+  },
+  {
+    personality: 'Liberty',
+    percentage: 65
+  }
+];
+
+const PERSONALITIES_STEPHEN = [
+  {
+    personality: 'Openness',
+    percentage: 56
+  },
+  {
+    personality: 'Conscientiousness',
+    percentage: 75
+  },
+  {
+    personality: 'Extraversion',
+    percentage: 94
+  },
+  {
+    personality: 'Agreeableness',
+    percentage: 64
+  },
+  {
+    personality: 'Emotional range',
+    percentage: 68
+  },
+  {
+    personality: 'Desire for Challenge',
+    percentage: 70
+  },
+  {
+    personality: 'Desire for Closeness',
+    percentage: 74
+  },
+  {
+    personality: 'Conservation, Value',
+    percentage: 44
+  },
+  {
+    personality: 'Curiosity',
+    percentage: 36
+  },
+  {
+    personality: 'Harmony',
+    percentage: 60
+  },
+  {
+    personality: 'Stability',
+    percentage: 65
+  },
+  {
+    personality: 'Structure',
+    percentage: 71
+  },
+  {
+    personality: 'Excitement',
+    percentage: 46
+  },
+  {
+    personality: 'Open to Change',
+    percentage: 51
+  },
+  {
+    personality: 'Liberty',
+    percentage: 24
+  }
+];
+
 class MainApp extends Component {
   constructor() {
     super()
-    this.state={
+    console.log("***********************")
+    var username_temp = 'default_user';
+    var personality_set = PERSONALITIES_DEFAULT;
+    if (username_temp==='stephmcflurry') {
+      personality_set = PERSONALITIES_STEPHEN;
+    }
+    this.state = {
+      personalities: personality_set
+    }
+    
+    this.state = {
       page: 1,
       messages: DUMMY_DATA,
       auth: false,
       wsfEmail: '',
-      username: ''
+      username: username_temp,
+      personalities: personality_set
     };
-
     if (localStorage.wsfEmail) {
       this.checkAuth(localStorage.wsfEmail);  
     }
@@ -37,13 +174,13 @@ class MainApp extends Component {
         appToRender = <HomeApp />
         break;
       case 2:
-        appToRender = <ConversationApp messages = {this.state.messages} onChange={() => this.handleChangeInMessages} />
+        appToRender = <ConversationApp messages = {this.state.messages} onChange={() => this.handleChangeInMessages} username={this.state.username} />
         break
       case 3:
-        appToRender = <PersonalityApp />
+        appToRender = <PersonalityApp personalities={this.state.personalities} username={this.state.username} />
         break;
       case 4:
-    appToRender = (<><LoginForm setAuth={this.setAuth} /><br /><p>Current user: {this.state.username}</p></>);
+        appToRender = (<><LoginForm setAuth={this.setAuth} /><br /><p>Current user: {this.state.username}</p></>);
         break;
       default:
         appToRender = <HomeApp />
@@ -96,7 +233,6 @@ class MainApp extends Component {
 
 class ConversationApp extends Component {
   constructor(props) {
-    console.log(props)
     super(props)
     this.state = {
       messages: props.messages,
@@ -134,7 +270,7 @@ class ConversationApp extends Component {
     // 13 is the charCode for the Enter key
     if (e.charCode === 13 && this.state.current_input.length > 0) {
       
-      this.addMessageToList("User", this.state.current_input)
+      this.addMessageToList(this.props.username, this.state.current_input)
       
       this.sendPostRequest()
     }
@@ -143,7 +279,7 @@ class ConversationApp extends Component {
   async sendPostRequest() {
     // TODO: change the user from "Jon" to the logged-in user
     const foo = {
-      user: "jon@jon.com",
+      user: this.props.username,
       text: this.state.current_input
     };
     let response = await axios.post('/conversation', foo );
@@ -221,26 +357,137 @@ function Title() {
 
 class PersonalityApp extends React.Component {
   render() {
-    return (<p>PersonalityApp</p>)
+    var match_text = (
+      <>
+      <p>You have a match with jonjonH! You matched based on similarities of these qualities:</p>
+      <ul>
+        <li>Desire for Closeness</li>
+        <li>Desire for Challenge</li>
+        <li>Emotional Range</li>
+      </ul>
+      </>
+    )
+    var no_match_text = (
+      <p>Still searching for a match for you...</p>
+    )
+    return(
+      <div>
+        <h1>Personality Chart</h1>
+        <Graph personalities={this.props.personalities} />
+        {this.props.username==='stephmcflurry'? match_text : no_match_text }
+      </div>
+    )
   }
 }
 
+class Graph extends React.Component {
+  state = {}
+  render() {
+    return(
+      <div className="graph-wrapper">
+        <div className="graph">
+        <BarTextContent personalities={this.props.personalities} />
+          <div className="bar-lines-container">
+            { this.renderLines() }
+            { this.renderBars() }
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  renderLines() {
+    return Array(10).fill(null).map((el, i) => (
+      <Line
+        left={i*10}
+        key={i}
+      />
+    ))
+  }
+
+  renderBars() {
+    const personalities = this.props.personalities;
+    /* let sumOfValues = values.reduce((acc, item) => {
+      return acc + item.percentage;
+    }, 0); */
+    
+    return personalities.map((personality) => {
+      return (
+        <Bar
+          percent={personality.percentage}
+          key={personality.personality}
+        />
+      )
+    });
+  }
+
+}
+
+  const BarTextContent = ( {personalities} ) => {
+    return (<div className="bar-text-content">
+              {
+                personalities.map((item) => (
+                  <div className="text">
+                    {item.personality}
+                  </div>
+                ))
+              }
+            </div>)
+  }
+
+const Box = posed.div({
+    visible: { opacity: 1 },
+    hidden: { opacity: 0 }
+    })
+
 class HomeApp extends React.Component {
+  constructor() {
+    super()
+    this.state = {
+      isVisible: true
+    };
+    this.renderBox = this.renderBox.bind(this)
+  }
+componentDidMount() {
+    setInterval(() => {
+      this.setState({ isVisible: !this.state.isVisible });
+    }, 1000);
+  }
   render() {
     return (
       <React.Fragment>
         <h1>Watson Speed Friending</h1>
-        <p>Welcome to Watson Speed Friending, created by Jonathon Huang,
-            Aakash Singh, Stephen Wan, and Ziheng Wei</p>
-        <p>The "Conversation with Watson" tab will start a conversation
-            with Watson to begin collecting interests and personality
-            information about the user.</p>
-        <p>The "User Personality" tab will display information that
-            Watson has gathered from the conversation about a user's
-            interests and personality.</p>
+          <p>Welcome to Watson Speed Friending, created by Jonathon Huang,
+              Aakash Singh, Stephen Wan, and Ziheng Wei</p>
+          <p>The "Conversation with Watson" tab will start a conversation
+              with Watson to begin collecting interests and personality
+              information about the user.</p>
+          <p>The "User Personality" tab will display information that
+              Watson has gathered from the conversation about a user's
+              interests and personality.</p>
       </React.Fragment>
     )
+    // {this.renderBox()}
   }
+
+  renderBox() {
+    return <Box className="box" pose={this.state.isVisible ? 'visible' : 'hidden'} />
+  }
+}
+
+const Line = ({ left }) => {
+  return (
+    <div
+      className="line"
+      style={{ left: `${left}%` }}
+    />
+  )
+}
+
+const Bar = ({percent}) => {
+  return (
+    <div className="bar" style={{ width: `${percent}%` }} />
+  )
 }
 
 export default MainApp;

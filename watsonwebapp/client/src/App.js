@@ -216,7 +216,7 @@ class MessageItem extends Component {
     return (
       <div className={this.props.senderId == 'Watson'? 'message-item plain' : 'message-item color'}>
         <div className="message-sender">{this.props.senderId}</div>
-        <p className="message-text">{this.props.message}</p>
+        <div className="message-text"><span>{this.props.message}</span></div>
       </div>
     );
   }

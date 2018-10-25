@@ -26,9 +26,9 @@ class LoginForm extends Component {
       // User has failed to fill in one of the required inputs.
     } else {
       let response = await axios.post('/login', {email: this.state.email, password: this.state.password});
-      if (response.body.success) {
+      if (response.data.success) {
         // Change the auth state
-        this.props.setAuth(true, this.state.email, response.body.username);
+        this.props.setAuth(true, this.state.email, response.data.username);
       }
     }
   }

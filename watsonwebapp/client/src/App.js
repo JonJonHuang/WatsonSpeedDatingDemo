@@ -20,6 +20,7 @@ class MainApp extends Component {
       page: 1,
       messages: DUMMY_DATA,
       auth: false,
+      wsfEmail: '',
       username: ''
     };
 
@@ -42,7 +43,7 @@ class MainApp extends Component {
         appToRender = <PersonalityApp />
         break;
       case 4:
-        appToRender = <LoginForm checkAuth={this.checkAuth} />;
+        appToRender = <LoginForm setAuth={this.setAuth} />;
         break;
       default:
         appToRender = <HomeApp />
@@ -77,18 +78,16 @@ class MainApp extends Component {
    * Asks the Express server whether this user is logged in or not. If so, then updates the state to reflect that.
    */
   checkAuth = async (email) => {
-    if (email) {
-      let response = await axios.post('/check-auth', {email: email});
-      if (response.body.success) {
-        this.setAuth(true, email, response.body.username);
-      } else {
-        this.setAuth(false, '', '')
-      }
+    let response = await axios.post('/check-auth', {email: email});
+    if (response.body.success) {
+      this.setAuth(true, email, response.body.username);
+    } else {
+      this.setAuth(false, '', '')
     }
   }
 
   setAuth = (authStatus, email, username) => {
-    let newState = {...this.state, auth: authStatus, username: username};
+    let newState = {...this.state, auth: authStatus, username: username, wsfEmail: email};
     localStorage.wsfEmail = email;
     this.setState(newState);
   }

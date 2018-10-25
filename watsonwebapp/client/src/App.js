@@ -62,14 +62,6 @@ class MainApp extends Component {
 
 }
 
-function SideNav() {
-  return (
-    <p>dummy</p>
-  );
-    // a(href='/conversation/get-groups') Check for Matches
-    // a(href='/personality') User Personality
-}
-
 class ConversationApp extends Component {
   constructor(props) {
     console.log(props)
@@ -97,18 +89,6 @@ class ConversationApp extends Component {
         />
       </React.Fragment>
     );
-
-        /*
-        <button
-          type="button"
-          onClick={ function() {
-            console.log("ans");
-            ReactDOM.render(<Title />, document.getElementById('root'));
-          } }
-        >
-          Debugger
-        </button>
-        */
   }
   
   handleChangeXXX(e) {
@@ -129,17 +109,13 @@ class ConversationApp extends Component {
   }
 
   async sendPostRequest() {
-    // console.log("postrequest this.state.current_input: " + this.state.current_input)
+    // TODO: change the user from "Jon" to the logged-in user
     const foo = {
       user: "Jon",
       text: this.state.current_input
     };
-    
     let response = await axios.post('http://localhost:3000/conversation', foo );
-    // console.log(response);
     this.addMessageToList('Watson', response.data[0]);
-    // console.log("end of sendPostRequest")
-    
   }
 
   addMessageToList(senderId, text) {
@@ -149,7 +125,12 @@ class ConversationApp extends Component {
     this.setState({
       messages: messages_copy,
       current_input: ''
+    }, function() {
+      // scroll to bottom of message-list
+      var messageList = document.getElementsByClassName("message-list")[0];
+      messageList.scrollTop = messageList.scrollHeight;
     })
+    
   }
 
 }
@@ -178,7 +159,7 @@ class MessageList extends React.Component {
 class MessageItem extends Component {
   render() {
     return (
-      <div className={this.props.senderId == 'Watson'? 'message-item plain' : 'message-item color'}>
+      <div className={this.props.senderId === 'Watson'? 'message-item plain' : 'message-item color'}>
         <div className="message-sender">{this.props.senderId}</div>
         <div className="message-text"><span>{this.props.message}</span></div>
       </div>
@@ -187,7 +168,6 @@ class MessageItem extends Component {
 }
 
 function SendMessageForm(props) {
-  // console.log(props)
   return(
     <input
       className="send-message-form"

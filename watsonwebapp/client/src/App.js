@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
+// import ReactDOM from 'react-dom';
 // import logo from './logo.svg';
 import './App.css';
 import axios from 'axios';
@@ -15,38 +15,51 @@ class MainApp extends Component {
   constructor() {
     super()
     this.state={
-      page: 1
+      page: 1,
+      messages: DUMMY_DATA
     }
+    this.handleChangeInMessages = this.handleChangeInMessages.bind(this)
   }
   
   render() {
-    var dummy = " "
+    var appToRender = " "
     switch(this.state.page) {
       case 1:
-        dummy = <HomeApp />
+        appToRender = <HomeApp />
         break;
       case 2:
-        dummy = <ConversationApp />
+        appToRender = <ConversationApp messages = {this.state.messages} onChange={() => this.handleChangeInMessages} />
         break
       case 3:
-        dummy = <PersonalityApp />
+        appToRender = <PersonalityApp />
         break;
       default:
-        dummy = <HomeApp />
+        appToRender = <HomeApp />
     }
     return (
-      <>
-        <div className="sidenav">
-          <button onClick={() => this.setState({page: 1})} >Home</button>
+      <React.Fragment>
+        <div className="side-nav">
+          <a onClick={() => this.setState({page: 1})} >Home</a>
           <br/>
-          <button onClick={() => this.setState({page: 2})} >Conversation with Watson</button>
+          <a onClick={() => this.setState({page: 2})} >Conversation with Watson</a>
           <br/>
-          <button onClick={() => this.setState({page: 3})} >Personality and Matches</button>
+          <a onClick={() => this.setState({page: 3})} >Personality and Matches</a>
         </div>
-        {dummy}
-      </>
+        <div className="main-content">
+          {appToRender}
+        </div>
+      </React.Fragment>
     )
   }
+  
+  handleChangeInMessages(e) {
+    console.log("inside handleChangeInMessages")
+    console.log(e)
+    this.setState({
+      messages: e.target.value
+    })
+  }
+
 }
 
 function SideNav() {
@@ -58,10 +71,11 @@ function SideNav() {
 }
 
 class ConversationApp extends Component {
-  constructor() {
-    super()
+  constructor(props) {
+    console.log(props)
+    super(props)
     this.state = {
-      messages: DUMMY_DATA,
+      messages: props.messages,
       current_input: ''
     }
     this.handleChangeXXX = this.handleChangeXXX.bind(this)
@@ -69,16 +83,22 @@ class ConversationApp extends Component {
   }
 
   render() {
-    // console.log(this.state.current_input)
     return (
-      <div className="ConversationApp">
+      <React.Fragment>
         <Title />
-        <MessageList messages = {this.state.messages} />
+        <MessageList
+          messages = {this.state.messages}
+          onChange = {this.props.onChange()}
+        />
         <SendMessageForm
           value={this.state.current_input}
           onChange={() => this.handleChangeXXX}
           onKeyPress={() => this.handleKeyPressXXX}
         />
+      </React.Fragment>
+    );
+
+        /*
         <button
           type="button"
           onClick={ function() {
@@ -88,10 +108,9 @@ class ConversationApp extends Component {
         >
           Debugger
         </button>
-      </div>
-    );
+        */
   }
-
+  
   handleChangeXXX(e) {
     // on change, update the state's message
     this.setState({
@@ -102,35 +121,24 @@ class ConversationApp extends Component {
   handleKeyPressXXX(e) {
     // 13 is the charCode for the Enter key
     if (e.charCode === 13 && this.state.current_input.length > 0) {
-      console.log("ENTER KEY")
-      // send the state's message for submission
-      console.log("handleKeyPressXXX: " + this.state.current_input)
-      
-      // SEND HTTP POST
-      this.sendPostRequest()
       
       this.addMessageToList("User", this.state.current_input)
+      
+      this.sendPostRequest()
     }
   }
 
   async sendPostRequest() {
-    console.log("postrequest this.state.current_input: " + this.state.current_input)
+    // console.log("postrequest this.state.current_input: " + this.state.current_input)
     const foo = {
       user: "Jon",
       text: this.state.current_input
     };
     
     let response = await axios.post('http://localhost:3000/conversation', foo );
-    console.log(response);
+    // console.log(response);
     this.addMessageToList('Watson', response.data[0]);
-      /*.then((response) => {
-        console.log(response)
-        this.addMessageToList("Watson", "dummytext")
-      })
-      .catch(function (error) {
-        console.log(error)
-      })*/
-    console.log("end of sendPostRequest")
+    // console.log("end of sendPostRequest")
     
   }
 
@@ -149,36 +157,30 @@ class ConversationApp extends Component {
 class MessageList extends React.Component {
   render() {
     return (
-      <ul className="message-list">
+      <div className="message-list" >
         {this.props.messages.map(message => {
           return (
-            <MessageItem
-              senderId={message.senderId}
-              message={message.text}
-            />
+            <React.Fragment>
+              <MessageItem
+                senderId={message.senderId}
+                message={message.text}
+              />
+              <br/>
+            </React.Fragment>
           )
         })}
-      </ul>
+      </div>
     )
   }
-  
-  /* <li key={message.id}>
-              <div>
-                {message.senderId}
-              </div>
-              <div>
-                {message.text}
-              </div>
-            </li> */
   
 }
 
 class MessageItem extends Component {
   render() {
     return (
-      <div className="message-item">
+      <div className={this.props.senderId == 'Watson'? 'message-item plain' : 'message-item color'}>
         <div className="message-sender">{this.props.senderId}</div>
-        <div className="message-text">{this.props.message}</div>
+        <p className="message-text">{this.props.message}</p>
       </div>
     );
   }
@@ -195,18 +197,6 @@ function SendMessageForm(props) {
       onKeyPress={props.onKeyPress()}
     />
   );
-  
-    // onChange={this.handleChange}
-    // onKeyPress={this.handleKeyPress}
-    
-    /* <form
-        className="send-message-form">
-        <input
-          onChange={this.handleChange}
-          value={this.state.message}
-          placeholder="Type your message and hit ENTER"
-          type="text" />
-      </form> */
   
 }
 
@@ -225,11 +215,17 @@ class PersonalityApp extends React.Component {
 class HomeApp extends React.Component {
   render() {
     return (
-      <>
-        <p>Welcome to Watson Speed Friending, created by Jonathon Huang, Aakash Singh, Stephen Wan, and Ziheng Wei</p>
-        <p>The "Conversation with Watson" tab will start a conversation with Watson to begin collecting interests and personality information about the user.</p>
-        <p>The "User Personality" tab will display information that Watson has gathered from the conversation about a user's interests and personality.</p>
-      </>
+      <React.Fragment>
+        <h1>Watson Speed Friending</h1>
+        <p>Welcome to Watson Speed Friending, created by Jonathon Huang,
+            Aakash Singh, Stephen Wan, and Ziheng Wei</p>
+        <p>The "Conversation with Watson" tab will start a conversation
+            with Watson to begin collecting interests and personality
+            information about the user.</p>
+        <p>The "User Personality" tab will display information that
+            Watson has gathered from the conversation about a user's
+            interests and personality.</p>
+      </React.Fragment>
     )
   }
 }

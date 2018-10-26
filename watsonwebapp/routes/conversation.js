@@ -20,6 +20,7 @@ router.get('/', function(req, res, next) {
 
 router.post('/', function(req, res, next) {
   db.getUser(req.body.user).then((user) => {
+    console.log(user);
     //console.log("CONTEXTID:" + user.contextId);
     watsonAssistant.message({
       workspace_id: '9cc07323-047a-4ad5-894f-4052532d8e8a',

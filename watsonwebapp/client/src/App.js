@@ -174,7 +174,7 @@ class MainApp extends Component {
         appToRender = <HomeApp />
         break;
       case 2:
-        appToRender = <ConversationApp messages = {this.state.messages} onChange={() => this.handleChangeInMessages} username={this.state.username} />
+        appToRender = <ConversationApp messages = {this.state.messages} onChange={() => this.handleChangeInMessages} username={this.state.wsfEmail} />
         break
       case 3:
         appToRender = <PersonalityApp personalities={this.state.personalities} username={this.state.username} />
@@ -282,6 +282,7 @@ class ConversationApp extends Component {
       user: this.props.username,
       text: this.state.current_input
     };
+    console.log(this.props.username);
     let response = await axios.post('/conversation', foo );
     console.log(response);
     this.addMessageToList('Watson', response.data[0]);
@@ -359,7 +360,7 @@ class PersonalityApp extends React.Component {
   render() {
     var match_text = (
       <>
-      <p>You have a match with jonjonH! You matched based on similarities of these qualities:</p>
+      <p>You have a match with aa! You matched based on similarities of these qualities:</p>
       <ul>
         <li>Desire for Closeness</li>
         <li>Desire for Challenge</li>

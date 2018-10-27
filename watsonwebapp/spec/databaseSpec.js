@@ -1,22 +1,38 @@
-var personality = require('../routes/personality');
+var db = require('../bin/db.js');
+var email = 'testing@test.com';
+var pas = '123';
+var userName = 'testing';
+// var email1 = 'testing1@test.com';
+// var pas1 = '1234';
+// var userName1 ='bornToBeRemoved';
+var message = 'testing';
+var res = false;
 
-describe('personality',function(){
+describe('database',function(){
 
     beforeAll(function(done){
+        db.registerUser(email, userName, pas);
         done();
     })
-    it('Adding user successful', function(done){
-        expect(personality).not.toBeNull();
-        done();
+    it('Add user message successful', function(done){
+        db.addUserMessage(email,message).then((res) => {
+            expect(res).toBe(true);
+            done();
+        });
     })
-    it('finding user successful', function(done){
-        expect(personality).not.toBeNull();
-        done();
+    it('validate user successful', function(done){
+        db.validateUser(email, pas).then((res) =>{
+            expect(res).toBe(true);
+            done();
+        })
     })
-    it('message stored successful', function(done){
-        expect(personality).not.toBeNull();
-        done();
-    })
+    // it('remove user successful', function(done){
+    //     db.registerUser(email1,userName1,pas1);
+    //     db.removeUser(email1).then((res) => {
+    //         expect(res).toBe(true);
+    //         done();
+    //     });
+    // })
     afterAll(function(done){
         done();
     })

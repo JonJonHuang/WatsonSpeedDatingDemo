@@ -97,6 +97,23 @@ async function registerUser(email, username, password) {
     }
     return false;
 }
+/**
+ * @para {*} email
+ * @returns Promise<boolean> that removed user
+ */
+async function removeUser(email){
+    let user = await getUser(email);
+    if(user){
+        let success = await user.remove().then(() => {
+            return true;
+        }, (err) => {
+            console.error(err);
+            return false;
+        });
+        return success;
+    }
+    return false;
+}
 
 /**
  * 
@@ -113,6 +130,7 @@ async function validateUser(email, password) {
     }
     return false;
 }
+
 
 /**
  * 
@@ -146,5 +164,6 @@ module.exports = {
     validateUser: validateUser,
     addUserMessage: addUserMessage,
     setContextId: setContextId,
+    removeUser: removeUser,
     getAllUsers: getAllUsers
 };

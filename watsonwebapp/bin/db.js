@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const bcrypt = require('bcryptjs');
 
-// const uri = "mongodb://Default:12345@watsonspeedfriending-shard-00-00-2njuo.mongodb.net:27017,watsonspeedfriending-shard-00-01-2njuo.mongodb.net:27017,watsonspeedfriending-shard-00-02-2njuo.mongodb.net:27017/test?ssl=true&replicaSet=WatsonSpeedFriending-shard-0&authSource=admin&retryWrites=true";
 const uri = "mongodb+srv://Default:12345@watsonspeedfriending-2njuo.mongodb.net/test?retryWrites=true";
 // const uri = "mongodb://localhost:27017";
 // mongoose.connect(uri, (err) => {
@@ -97,6 +96,23 @@ async function registerUser(email, username, password) {
     }
     return false;
 }
+/**
+ * @para {*} email
+ * @returns Promise<boolean> that removed user
+ */
+async function removeUser(email){
+    let user = await getUser(email);
+    if(user){
+        let success = await user.remove().then(() => {
+            return true;
+        }, (err) => {
+            console.error(err);
+            return false;
+        });
+        return success;
+    }
+    return false;
+}
 
 /**
  * 
@@ -113,6 +129,7 @@ async function validateUser(email, password) {
     }
     return false;
 }
+
 
 /**
  * 
@@ -146,5 +163,6 @@ module.exports = {
     validateUser: validateUser,
     addUserMessage: addUserMessage,
     setContextId: setContextId,
+    removeUser: removeUser,
     getAllUsers: getAllUsers
 };

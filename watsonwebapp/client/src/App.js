@@ -174,13 +174,13 @@ class MainApp extends Component {
         appToRender = <HomeApp />
         break;
       case 2:
-        appToRender = <ConversationApp messages = {this.state.messages} onChange={() => this.handleChangeInMessages} username={this.state.wsfEmail} />
+        appToRender = <ConversationApp messages = {this.state.messages} onChange={() => this.handleChangeInMessages} wsfEmail={this.state.wsfEmail} />
         break
       case 3:
         appToRender = <PersonalityApp personalities={this.state.personalities} username={this.state.username} />
         break;
       case 4:
-        appToRender = (<><LoginForm setAuth={this.setAuth} /><br /><p>Current user: {this.state.username}</p></>);
+        appToRender = <><LoginForm setAuth={this.setAuth} /><br /><p>Current user: {this.state.username}</p></>;
         break;
       default:
         appToRender = <HomeApp />
@@ -204,11 +204,11 @@ class MainApp extends Component {
   }
   
   handleChangeInMessages(e) {
-    console.log("inside handleChangeInMessages")
-    console.log(e)
+    console.log("inside handleChangeInMessages");
+    console.log(e);
     this.setState({
       messages: e.target.value
-    })
+    });
   }
 
   /**
@@ -219,7 +219,7 @@ class MainApp extends Component {
     if (response.data.success) {
       this.setAuth(true, email, response.data.username);
     } else {
-      this.setAuth(false, '', '')
+      this.setAuth(false, '', '');
     }
   }
 
@@ -279,12 +279,10 @@ class ConversationApp extends Component {
   async sendPostRequest() {
     // TODO: change the user from "Jon" to the logged-in user
     const foo = {
-      user: this.props.username,
+      email: this.props.wsfEmail,
       text: this.state.current_input
     };
-    console.log(this.props.username);
     let response = await axios.post('/conversation', foo );
-    console.log(response);
     this.addMessageToList('Watson', response.data[0]);
   }
 

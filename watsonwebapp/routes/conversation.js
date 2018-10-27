@@ -19,23 +19,26 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/', function(req, res, next) {
-  db.getUser(req.body.user).then((user) => {
-    console.log(user);
-    //console.log("CONTEXTID:" + user.contextId);
-    watsonAssistant.message({
-      workspace_id: '9cc07323-047a-4ad5-894f-4052532d8e8a',
-      input: {
-        text: req.body.text
-      },
-      context: user.contextId
-    }, function(err, watsonRes) {
-      if (err) console.error(err);
-      console.log("2");
-      db.setContextId(req.body.emailAddr, user.contextId);
-      db.addUserMessage(req.body.emailAddr, req.body.text);
-      console.log("3");
-      res.send(watsonRes.output.text);
-    });
+  console.log(req.body);
+  db.getUser(req.body.email).then((user) => {
+    if (user) {
+      watsonAssistant.message({
+        workspace_id: '9cc07323-047a-4ad5-894f-4052532d8e8a',
+        input: {
+          text: req.body.text
+        },
+        context: user.contextId
+      }, function(err, watsonRes) {
+        if (err) console.error(err);
+        console.log("2");
+        db.setContextId(req.body.emailAddr, user.contextId);
+        db.addUserMessage(req.body.emailAddr, req.body.text);
+        console.log("3");
+        res.send(watsonRes.output.text);
+      });
+    } else {
+      res.send(['There was an error.'])
+    }
   });
 });
 

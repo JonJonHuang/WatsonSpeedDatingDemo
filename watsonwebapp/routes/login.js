@@ -5,11 +5,13 @@ const dbUtils = require('../bin/db');
 
 router.post('/', async (req, res, next) => {
   let success = await dbUtils.validateUser(req.body.email, req.body.password);
-  let user = await dbUtils.getUser(req.body.email);
-  res.send({success: success, username: user.username});
   if (success) {
+    let user = await dbUtils.getUser(req.body.email);
     req.session.loggedIn = true;
     req.session.userEmail = req.body.email;
+    res.send({success: success, username: user.username});
+  } else {
+    res.send({success: false});
   }
 });
 

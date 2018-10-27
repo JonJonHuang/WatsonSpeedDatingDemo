@@ -46,7 +46,7 @@ class ConversationApp extends Component {
 
   async sendPostRequest() {
     const foo = {
-      user: this.props.username,
+      email: this.props.wsfEmail,
       text: this.state.current_input
     };
     let response = await axios.post('/conversation', foo );

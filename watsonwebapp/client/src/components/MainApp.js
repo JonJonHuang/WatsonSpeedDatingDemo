@@ -179,7 +179,7 @@ class MainApp extends Component {
           <ConversationApp
             messages = {this.state.messages}
             onChange={() => this.handleChangeInMessages}
-            username={this.state.username} />
+            wsfEmail={this.state.wsfEmail} />
         )
         break
       case 3:

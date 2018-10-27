@@ -22,7 +22,7 @@ sudo npm install express-generator -g
 express --view=pug watsonwebapp
 ```
 
-### To set up Mongo database
+### To set up Mongo database locally
 Go to the [MongoDB Community Server download page](https://www.mongodb.com/download-center?initial=true#community) and install MongoDB Server. If you want to you can also install Compass (provides a GUI view for MongoDB).
 
 Add the MongoDB bin folder to your PATH environment variables so that you can run ```mongod``` from the command line.

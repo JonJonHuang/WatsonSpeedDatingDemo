@@ -2,8 +2,9 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const bcrypt = require('bcryptjs');
 
-// var uri = "mongodb://JHuang:watsonspeedfriending@watsonspeedfriending-shard-00-00-2njuo.mongodb.net:27017,watsonspeedfriending-shard-00-01-2njuo.mongodb.net:27017,watsonspeedfriending-shard-00-02-2njuo.mongodb.net:27017/test?ssl=true&replicaSet=WatsonSpeedFriending-shard-0&authSource=admin&retryWrites=true"
-const uri = "mongodb://localhost:27017";
+// const uri = "mongodb://Default:12345@watsonspeedfriending-shard-00-00-2njuo.mongodb.net:27017,watsonspeedfriending-shard-00-01-2njuo.mongodb.net:27017,watsonspeedfriending-shard-00-02-2njuo.mongodb.net:27017/test?ssl=true&replicaSet=WatsonSpeedFriending-shard-0&authSource=admin&retryWrites=true";
+const uri = "mongodb+srv://Default:12345@watsonspeedfriending-2njuo.mongodb.net/test?retryWrites=true";
+// const uri = "mongodb://localhost:27017";
 // mongoose.connect(uri, (err) => {
 //     if (err)
 //         throw err;
@@ -21,24 +22,31 @@ const userSchema = new Schema({
 });
 const UserModel = mongoose.model('users', userSchema);
 
-async function connect(uri = uri) {
-    return mongoose.connect(uri)
-}
-
 mongoose.connect(uri).then(() => {
     console.log('Mongoose connection opened.');
-}, (reason) => {
-    console.error(reason);
 }).catch((err) => {
-    throw err;
+    console.error(err);
+    process.exit(1);
 });
 
-process.on('SIGINT', () => {
-    mongoose.connection.close(() => {
-        console.log('Mongoose connection closed.');
+process.on('exit', () => {
+    console.log('Closing Mongoose connection.');
+    mongoose.disconnect().then(() => {
+        console.log('Mongoose connection closed.')
         process.exit(0);
+    }, (err) => {
+        throw err;
     });
 });
+// process.on('SIGINT', () => {
+//     console.log('hi');
+//     mongoose.disconnect().then(() => {
+//         console.log('Mongoose connection closed.')
+//         process.exit(0);
+//     }, (err) => {
+//         throw err;
+//     });
+// });
 
 /**
  * 
@@ -46,11 +54,18 @@ process.on('SIGINT', () => {
  * @returns Promise<User>
  */
 async function getUser(email) {
-    return UserModel.findOne({email: email});
+    return UserModel.findOne({email: email}).catch((err) => {
+        console.error(err);
+    });;
 }
 
+/**
+ * @returns Promise<Users>
+ */
 async function getAllUsers() {
-    return UserModel.find({});
+    return UserModel.find({}).catch((err) => {
+        console.error(err);
+    });
 }
 
 /**
@@ -72,8 +87,13 @@ async function registerUser(email, username, password) {
             messages: [],
             personality: []
         });
-        await newUser.save();
-        return true;
+        let success = await newUser.save().then(() => {
+            return true;
+        }, (err) => {
+            console.error(err);
+            return false;
+        });
+        return success;
     }
     return false;
 }
@@ -87,7 +107,9 @@ async function registerUser(email, username, password) {
 async function validateUser(email, password) {
     let user = await getUser(email);
     if (user) {
-        return bcrypt.compare(password, user.pwHash);
+        return bcrypt.compare(password, user.pwHash).catch((err) => {
+            console.error(err);
+        });
     }
     return false;
 }
@@ -102,20 +124,20 @@ async function addUserMessage(email, message) {
     let user = await getUser(email);
     if (user) {
         user.messages.push(message);
-        await user.save();
-        return true;
+        let success = await user.save().then(() => {
+            return true;
+        }, (err) => {
+            return false;;
+        });
+        return success;
     }
     return false;
 }
 
 async function setContextId(email, contextId) {
-    let user = await getUser(email);
-    if (user) {
-        user.contextId = contextId;
-        await user.save();
-        return true;
-    }
-    return false;
+    return UserModel.updateOne({email: email}, {contextId: contextId}).catch((err) => {
+        console.error(err);
+    });
 }
 
 module.exports = {

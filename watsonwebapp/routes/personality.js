@@ -13,11 +13,6 @@ var personalityInsight = new PersonalityInsightsV3({
 var userMatcher = require('../bin/matcher.js');
 var mather = new userMatcher;
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-    res.render('personality', { title: 'User Personality' });
-});
-
 router.post('/', function(req,res,next){
 
 })

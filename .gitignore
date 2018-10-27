@@ -1,4 +1,5 @@
-/watsonwebapp/data/db/**
 /data/db/**
 /watsonwebapp/node_modules/**
-.vscode/**
+/watsonwebapp/client/node_modules/**
+/.vscode/**
+/node_modules/**

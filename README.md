@@ -32,3 +32,6 @@ Run
 mkdir WatsonSpeedFriending/data/db
 npm run dbon
 ```
+
+### To set up Mongo database on Ubuntu
+https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/

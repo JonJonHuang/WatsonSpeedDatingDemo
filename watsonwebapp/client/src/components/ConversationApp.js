@@ -8,6 +8,7 @@ class ConversationApp extends Component {
       messages: props.messages,
       current_input: ''
     }
+    console.log(this.props.wsfEmail);
     this.handleChangeXXX = this.handleChangeXXX.bind(this)
     this.handleKeyPressXXX = this.handleKeyPressXXX.bind(this)
   }

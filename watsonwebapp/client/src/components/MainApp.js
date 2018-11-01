@@ -151,16 +151,12 @@ class MainApp extends Component {
       personality_set = PERSONALITIES_STEPHEN;
     }
     this.state = {
-      personalities: personality_set
-    }
-    
-    this.state = {
       page: 1,
       messages: DUMMY_DATA,
-      auth: false,
+      personalities: personality_set,
       wsfEmail: '',
       username: username_temp,
-      personalities: personality_set
+      auth: false
     };
     if (localStorage.wsfEmail) {
       this.checkAuth(localStorage.wsfEmail);  

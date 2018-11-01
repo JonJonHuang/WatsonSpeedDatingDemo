@@ -27,13 +27,12 @@ router.post('/', function(req, res, next) {
         input: {
           text: req.body.text
         },
-        context: user.contextId
       }, function(err, watsonRes) {
         if (err) console.error(err);
-        console.log("2");
-        db.setContextId(req.body.emailAddr, user.contextId);
-        db.addUserMessage(req.body.emailAddr, req.body.text);
-        console.log("3");
+        user.contextId = watsonRes.context.conversation_id;
+        console.log("ID", user.contextId);
+        db.setContextId(req.body.email, user.contextId);
+        db.addUserMessage(req.body.email, req.body.text);
         res.send(watsonRes.output.text);
       });
     } else {

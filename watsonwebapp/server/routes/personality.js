@@ -10,7 +10,7 @@ var personalityInsight = new PersonalityInsightsV3({
     url: 'https://gateway-wdc.watsonplatform.net/personality-insights/api'
 });
 
-var userMatcher = require('../bin/matcher.js');
+var userMatcher = require('../../util/matcher.js');
 var mather = new userMatcher;
 
 router.post('/', function(req,res,next){

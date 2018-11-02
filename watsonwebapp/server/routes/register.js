@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const dbUtils = require('../bin/db');
+const dbUtils = require('../../util/db');
 
 router.post('/', async (req, res, next) => {
   let success = await dbUtils.registerUser(req.body.email, req.body.username, req.body.password);

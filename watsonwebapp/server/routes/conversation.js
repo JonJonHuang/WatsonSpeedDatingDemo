@@ -10,7 +10,7 @@ var watsonAssistant = new AssistantV1({
   url: 'https://gateway.watsonplatform.net/assistant/api'
 });
 
-var db = require('../bin/db.js');
+var db = require('../../util/db.js');
 var users = {};
 
 /* GET home page. */

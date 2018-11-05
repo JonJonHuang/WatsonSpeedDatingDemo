@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 
-const sess = require('../server/session');
-const dbUtils = require('../bin/db');
+const dbUtils = require('../../util/db');
 
 router.post('/', async (req, res, next) => {
+  console.log(req.session);
   if (!req.session.loggedIn || req.session.wsfEmail !== req.body.email) {
     res.send({success: false});
     return;

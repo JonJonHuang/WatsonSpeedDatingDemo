@@ -5,7 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors');
 
-var indexRouter = require('./routes/index');
+var indexRouter = require('./routes');
 var usersRouter = require('./routes/users');
 var conversationRouter = require('./routes/conversation');
 var personalityRouter = require('./routes/personality');
@@ -13,12 +13,17 @@ var authRouter = require('./routes/auth');
 var registerRouter = require('./routes/register');
 var loginRouter = require('./routes/login');
 var logoutRouter = require('./routes/logout');
-var sess = require('./server/session');
+var sess = require('./session');
 
 var app = express();
 
 app.use(cors());
 app.use(sess);
+
+app.use('*', (req, res, next) => {
+  console.log(req.sessionID);
+  next();
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -37,6 +42,7 @@ app.use('/check-auth', authRouter);
 app.use('/register', registerRouter);
 app.use('/login', loginRouter);
 app.use('/logout', logoutRouter);
+
 
 app.use(function (req, res, next) {
   res.status(404).send("Error 404 not found");

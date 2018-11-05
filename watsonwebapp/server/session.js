@@ -3,8 +3,9 @@ const uuid = require('uuid/v4');
 
 let sess = session({
   genid: (req) => {
-    console.log(req.sessionID, 'sess');
-    return uuid();
+    let newSessionId = uuid();
+    console.log('sess', newSessionId);
+    return newSessionId;
   },
   secret: '#C9WIN',
   resave: false,

@@ -14,7 +14,7 @@ const userSchema = new Schema({
     username: {type: String, required: true},
     pwHash: {type: String, required: true},
     messages: {type: Array, required: true},
-    contextId: {type: String, default: null},
+    context: {type: Schema.Types.Mixed, default: null},
     personality: {type: Array, required: true}
 }, {
     strict: true
@@ -151,8 +151,8 @@ async function addUserMessage(email, message) {
     return false;
 }
 
-async function setContextId(email, contextId) {
-    return UserModel.updateOne({email: email}, {contextId: contextId}).catch((err) => {
+async function setContext(email, context) {
+    return UserModel.updateOne({email: email}, {context: context}).catch((err) => {
         console.error(err);
     });
 }
@@ -162,7 +162,7 @@ module.exports = {
     registerUser: registerUser,
     validateUser: validateUser,
     addUserMessage: addUserMessage,
-    setContextId: setContextId,
+    setContext: setContext,
     removeUser: removeUser,
     getAllUsers: getAllUsers
 };

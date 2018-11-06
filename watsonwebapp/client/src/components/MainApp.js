@@ -153,6 +153,7 @@ class MainApp extends Component {
     this.state = {
       page: 1,
       messages: DUMMY_DATA,
+      current_input: '',
       personalities: personality_set,
       wsfEmail: '',
       username: username_temp,
@@ -161,7 +162,8 @@ class MainApp extends Component {
     if (localStorage.wsfEmail) {
       this.checkAuth(localStorage.wsfEmail);  
     }
-    this.handleChangeInMessages = this.handleChangeInMessages.bind(this)
+    this.handleChangeXXX = this.handleChangeXXX.bind(this)
+    this.handleKeyPressXXX = this.handleKeyPressXXX.bind(this)
   }
   
   render() {
@@ -174,7 +176,10 @@ class MainApp extends Component {
         appToRender = (
           <ConversationApp
             messages = {this.state.messages}
-            onChange={() => this.handleChangeInMessages}
+            current_input={this.state.current_input}
+            onChange={() => this.handleChangeXXX}
+            onKeyPress={() => this.handleKeyPressXXX}
+            scrollDown={() => this.scrollDown()}
             wsfEmail={this.state.wsfEmail} />
         )
         break
@@ -215,12 +220,47 @@ class MainApp extends Component {
     )
   }
   
-  handleChangeInMessages(e) {
-    console.log("inside handleChangeInMessages")
-    console.log(e)
+  handleChangeXXX(e) {
+    // on change, update the state's message
     this.setState({
-      messages: e.target.value
+      current_input: e.target.value
     })
+  }
+  
+  handleKeyPressXXX(e) {
+    // 13 is the charCode for the Enter key
+    if (e.charCode === 13 && this.state.current_input.length > 0) {
+      this.addMessageToList(this.props.username, this.state.current_input)
+      this.sendPostRequest()
+    }
+  }
+
+  async sendPostRequest() {
+    const foo = {
+      email: this.props.wsfEmail,
+      text: this.state.current_input
+    };
+    let response = await axios.post('/conversation', foo );
+    console.log(response);
+    this.addMessageToList('Watson', response.data[0]);
+  }
+
+  addMessageToList(senderId, text) {
+    // update messages; clear current_input
+    const messages_copy = this.state.messages.slice();
+    messages_copy.push({senderId: senderId, text: text})
+    this.setState({
+      messages: messages_copy,
+      current_input: ''
+    }, function() {
+      this.scrollDown()
+    })
+  }
+  
+  scrollDown() {
+    // scroll to bottom of message-list
+    var messageList = document.getElementsByClassName("message-list")[0];
+    messageList.scrollTop = messageList.scrollHeight;
   }
 
   /**

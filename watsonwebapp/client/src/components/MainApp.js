@@ -205,13 +205,26 @@ class MainApp extends Component {
     return (
       <React.Fragment>
         <div className="side-nav">
-          <a onClick={() => this.setState({page: 1})} >Home</a>
+          // TO-DO: change a tags to button tags
+          <button
+            onClick={() => this.setState({page: 1})} >
+              Home
+          </button>
           <br/>
-          <a onClick={() => this.setState({page: 2})} >Conversation with Watson</a>
+          <button
+            onClick={() => this.setState({page: 2})} >
+              Conversation with Watson
+          </button>
           <br/>
-          <a onClick={() => this.setState({page: 3})} >Personality and Matches</a>
+          <button
+            onClick={() => this.setState({page: 3})} >
+              Personality and Matches
+          </button>
           <br/>
-          <a onClick={() => this.setState({page: 4})} >Login</a>
+          <button
+            onClick={() => this.setState({page: 4})} >
+              Login
+          </button>
         </div>
         <div className="main-content">
           {appToRender}

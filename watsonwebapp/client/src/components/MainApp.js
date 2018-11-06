@@ -250,11 +250,10 @@ class MainApp extends Component {
 
   async sendPostRequest() {
     const foo = {
-      email: this.props.wsfEmail,
+      email: this.state.wsfEmail,
       text: this.state.current_input
     };
     let response = await axios.post('/conversation', foo );
-    console.log(response);
     this.addMessageToList('Watson', response.data[0]);
   }
 

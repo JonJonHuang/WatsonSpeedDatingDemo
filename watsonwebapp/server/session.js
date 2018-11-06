@@ -4,7 +4,7 @@ const uuid = require('uuid/v4');
 let sess = session({
   genid: (req) => {
     let newSessionId = uuid();
-    console.log('sess', newSessionId);
+    console.log('New session created:', newSessionId);
     return newSessionId;
   },
   secret: '#C9WIN',

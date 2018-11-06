@@ -4,8 +4,7 @@ const router = express.Router();
 const dbUtils = require('../../util/db');
 
 router.post('/', async (req, res, next) => {
-  console.log(req.session);
-  if (!req.session.loggedIn || req.session.wsfEmail !== req.body.email) {
+  if (!req.session.loggedIn || req.session.userEmail !== req.body.email) {
     res.send({success: false});
     return;
   }

@@ -19,7 +19,6 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/', function(req, res, next) {
-  console.log(req.body);
   db.getUser(req.body.email).then((user) => {
     if (user) {
       watsonAssistant.message({
@@ -30,7 +29,6 @@ router.post('/', function(req, res, next) {
       }, function(err, watsonRes) {
         if (err) console.error(err);
         user.contextId = watsonRes.context.conversation_id;
-        console.log("ID", user.contextId);
         db.setContextId(req.body.email, user.contextId);
         db.addUserMessage(req.body.email, req.body.text);
         res.send(watsonRes.output.text);
@@ -47,8 +45,6 @@ router.get('/get-groups', function(req, res, next) {
   //   function(err, watsonRes) {
   //   }
   // );
-  console.log("inside get-groups");
-
   var groups = matcher.findMatches(['genre'], 0);
   // TEMPORARY FIX
   groups = matcher.findGenreMatches();

@@ -137,10 +137,10 @@ async function validateUser(email, password) {
  * @param {*} message 
  * @returns Promise<boolean> that resolves with if the user message was saved.
  */
-async function addUserMessage(email, message) {
+async function addUserMessage(email, senderId, message, isWatson) {
     let user = await getUser(email);
     if (user) {
-        user.messages.push(message);
+        user.messages.push({senderId: senderId, text: message, isWatson: isWatson});
         let success = await user.save().then(() => {
             return true;
         }, (err) => {

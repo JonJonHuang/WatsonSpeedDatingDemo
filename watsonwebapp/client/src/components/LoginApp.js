@@ -53,7 +53,7 @@ class LoginForm extends Component {
         <br />
         <label>Password*: <br /><input type='text' value={this.state.password} onChange={this.setPassword} /></label>
         <br />
-        <DisplayWrongLoginAttempt num_wrong_logins={this.props.num_wrong_logins}/>
+        <DisplayWrongLoginAttempt num_wrong_logins={this.state.num_wrong_logins}/>
         <input className='login-button' type='submit' value='Login' />
       </form>
     );
@@ -69,7 +69,7 @@ const DisplayWrongLoginAttempt = ({ num_wrong_logins }) =>  {
       </label>
     )
   } else {
-    return(<br/>)
+    return(<label></label>)
   }
 }
 

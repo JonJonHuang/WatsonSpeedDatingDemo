@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 
 class ConversationApp extends Component {
   render() {
@@ -33,6 +32,7 @@ class MessageList extends React.Component {
               <MessageItem
                 senderId={message.senderId}
                 message={message.text}
+                isWatson={message.isWatson}
               />
               <br/>
             </React.Fragment>
@@ -63,7 +63,7 @@ function Title() {
 
 function MessageItem(props) {
   return (
-    <div className={props.senderId === 'Watson'? 'message-item plain' : 'message-item color'}>
+    <div className={props.isWatson ? 'message-item plain' : 'message-item color'}>
       <div className="message-sender">{props.senderId}</div>
       <div className="message-text"><span>{props.message}</span></div>
     </div>

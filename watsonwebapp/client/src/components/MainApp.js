@@ -7,12 +7,13 @@ import axios from 'axios';
 import HomeApp from './HomeApp';
 import ConversationApp from './ConversationApp';
 import PersonalityApp from './PersonalityApp';
-import LoginForm from './LoginPage';
+import LoginApp from './LoginApp';
 
 const DUMMY_DATA = [
   {
     senderId: "Watson",
-    text: "Hello, I'm Watson. How can I help you today?"
+    text: "Hello, I'm Watson. How can I help you today?",
+    isWatson: true
   }
 ];
 
@@ -145,7 +146,7 @@ const PERSONALITIES_STEPHEN = [
 class MainApp extends Component {
   constructor() {
     super()
-    var username_temp = 'default_user';
+    var username_temp = '';
     var personality_set = PERSONALITIES_DEFAULT;
     if (username_temp==='stephmcflurry') {
       personality_set = PERSONALITIES_STEPHEN;
@@ -157,7 +158,8 @@ class MainApp extends Component {
       personalities: personality_set,
       wsfEmail: '',
       username: username_temp,
-      auth: false
+      auth: false,
+      num_wrong_logins: 0
     };
     if (localStorage.wsfEmail) {
       this.checkAuth(localStorage.wsfEmail);  
@@ -169,9 +171,6 @@ class MainApp extends Component {
   render() {
     var appToRender = " "
     switch(this.state.page) {
-      case 1:
-        appToRender = <HomeApp />
-        break;
       case 2:
         appToRender = (
           <ConversationApp
@@ -190,22 +189,26 @@ class MainApp extends Component {
             username={this.state.username} />
         )
         break;
-      case 4:
-        appToRender = (
-          <React.Fragment>
-          <LoginForm
-            setAuth={this.setAuth} />
-          <br />
-          <p>Current user: {this.state.username}</p>
-          </React.Fragment>);
+      /* case 4:
+        appToRender = ();
+        break; */
+      case 5:
+        // TO-DO: register user page
+        // appToRender = <RegisterUser />
         break;
+      case 1:
       default:
         appToRender = <HomeApp />
+        break;
     }
     return (
       <React.Fragment>
         <div className="side-nav">
-          // TO-DO: change a tags to button tags
+          <LoginApp
+            current_user={this.state.username}
+            setAuth={this.setAuth}
+            num_wrong_logins={this.state.num_wrong_logins} />
+          <br />
           <button
             onClick={() => this.setState({page: 1})} >
               Home
@@ -220,17 +223,17 @@ class MainApp extends Component {
             onClick={() => this.setState({page: 3})} >
               Personality and Matches
           </button>
-          <br/>
-          <button
-            onClick={() => this.setState({page: 4})} >
-              Login
-          </button>
         </div>
         <div className="main-content">
           {appToRender}
         </div>
       </React.Fragment>
     )
+    /* <button
+            onClick={() => this.setState({page: 4})} >
+              Login
+          </button>
+          <br/> */
   }
   
   handleChangeXXX(e) {
@@ -243,7 +246,7 @@ class MainApp extends Component {
   handleKeyPressXXX(e) {
     // 13 is the charCode for the Enter key
     if (e.charCode === 13 && this.state.current_input.length > 0) {
-      this.addMessageToList(this.props.username, this.state.current_input)
+      this.addMessageToList(this.state.username, this.state.current_input, false)
       this.sendPostRequest()
     }
   }
@@ -254,13 +257,15 @@ class MainApp extends Component {
       text: this.state.current_input
     };
     let response = await axios.post('/conversation', foo );
-    this.addMessageToList('Watson', response.data[0]);
+    for (let message of response.data) {
+      this.addMessageToList('Watson', message, true);
+    }
   }
 
-  addMessageToList(senderId, text) {
+  addMessageToList(senderId, text, isWatson) {
     // update messages; clear current_input
     const messages_copy = this.state.messages.slice();
-    messages_copy.push({senderId: senderId, text: text})
+    messages_copy.push({senderId: senderId, text: text, isWatson: isWatson})
     this.setState({
       messages: messages_copy,
       current_input: ''

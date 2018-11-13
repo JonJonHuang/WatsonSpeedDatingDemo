@@ -1,16 +1,42 @@
 const express = require('express');
 const router = express.Router();
+var users = {};
+var personalityArr = require('../routes/personality.js');
+var matched;
 
-router.get('/', function(req, res, next) {
-    // watsonAssistant.listEntities(
-    //   {workspace_id: '9cc07323-047a-4ad5-894f-4052532d8e8a'},
-    //   function(err, watsonRes) {
-    //   }
-    // );
-    var groups = matcher.findMatches(['genre'], 0);
-    // TEMPORARY FIX
-    groups = matcher.findGenreMatches();
-    res.send(groups);
+var db = require('../../util/db.js');
+router.get('/', async function(req, res, next) {
+    matched = findMatch(personalityArr)
   });
-
+function findMatch(personalityArr){
+    var users = db.getAllUsers();
+    var personalityArr1;
+    for (var user in users) {
+        personalityArr1 = user.personality();
+        var userName = user.username();
+        var i;
+        var dist;
+        var totalDist = 0;
+        var maxDist = Number.MIN_VALUE;
+        for(i = 0; i<personalityArr.length; i++){
+            dist = Math.sqrt(Math.pow((personalityArr[i]-personalityArr1[i]),2));
+            if(dist >= maxDist){
+                maxDist = dist;
+            }
+            totalDist += dist;
+        }
+        totalDist = totalDist / maxDist;
+        var userMap = new Map();
+        userMap.set(totalDist, userName);
+        var scores = [];
+        scores.push(totalDist);
+    }
+    scores.sort(function(a, b){return a - b});
+    var topMatch = [];
+    for(i=0;i<scores.length;i++){
+        topMatch.push(userMap.get(scores[i]));
+    }
+    return topMatch;
+}
 module.exports = router;
+module.exports = matched;

@@ -18,37 +18,29 @@ router.get('/', function(req, res, next) {
   res.render('conversation', { title: 'Conversation with Watson' });
 });
 
-router.post('/', function(req, res, next) {
-  db.getUser(req.body.email).then((user) => {
-    if (user) {
-      watsonAssistant.message({
-        workspace_id: '9cc07323-047a-4ad5-894f-4052532d8e8a',
-        input: {
-          text: req.body.text
-        },
-      }, function(err, watsonRes) {
-        if (err) console.error(err);
-        user.contextId = watsonRes.context.conversation_id;
-        db.setContextId(req.body.email, user.contextId);
-        db.addUserMessage(req.body.email, req.body.text);
-        res.send(watsonRes.output.text);
-      });
-    } else {
-      res.send(['There was an error.'])
+router.post('/', async function(req, res, next) {
+  console.log(req.body);
+  let user = await db.getUser(req.body.email);
+  if (!user) {
+    res.send(['There was an error.'])
+  }
+  let input = {
+    workspace_id: '9cc07323-047a-4ad5-894f-4052532d8e8a',
+    input: {
+      text: req.body.text
     }
-  });
-});
+  }
+  if (user.context) {
+    input = {...input, context: user.context};
+  }
+  let watsonRes = await watsonAssistant.message(input, async (err, watsonRes) => {
+    if (err) console.error(err);
 
-router.get('/get-groups', function(req, res, next) {
-  // watsonAssistant.listEntities(
-  //   {workspace_id: '9cc07323-047a-4ad5-894f-4052532d8e8a'},
-  //   function(err, watsonRes) {
-  //   }
-  // );
-  var groups = matcher.findMatches(['genre'], 0);
-  // TEMPORARY FIX
-  groups = matcher.findGenreMatches();
-  res.send(groups);
+    res.send(watsonRes.output.text);
+    db.setContext(req.body.email, watsonRes.context);
+    await db.addUserMessage(req.body.email, user.username, req.body.text, false);
+    await db.addUserMessage(req.body.email, 'Watson', watsonRes.output.text, true);
+  });
 });
 
 module.exports = router;

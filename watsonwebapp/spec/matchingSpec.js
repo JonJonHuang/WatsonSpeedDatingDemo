@@ -1,5 +1,5 @@
-var matcher = require('../bin/matcher.js');
-var db = require('../bin/db.js');
+var matcher = require('../util/matcher.js');
+var db = require('../util/db.js');
 var personA = {
     email : 'a',
     username: 'bob',

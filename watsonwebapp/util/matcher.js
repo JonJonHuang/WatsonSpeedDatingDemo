@@ -1,4 +1,4 @@
-var personalityArr = require('../server/routes/personality.js');
+
 var UserMatcher = class {
   constructor() {
     this.userProfiles = [];

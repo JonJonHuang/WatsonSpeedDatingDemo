@@ -1,7 +1,7 @@
-var db = require('../bin/db.js');
-var email = 'testing@test.com';
-var pas = '123';
-var userName = 'testing';
+var db = require('../util/db.js');
+var email = 't@t';
+var pas = 'aaa';
+var userName = 'tw';
 // var email1 = 'testing1@test.com';
 // var pas1 = '1234';
 // var userName1 ='bornToBeRemoved';

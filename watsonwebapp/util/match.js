@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 var users = {};
-var personalityArr = require('../routes/personality.js');
+var personalityArr = require('server/routes/personality.js');
 var matched;
 
 var db = require('../../util/db.js');

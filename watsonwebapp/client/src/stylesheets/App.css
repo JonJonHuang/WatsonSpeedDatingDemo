@@ -2,6 +2,9 @@
     --watson-blue: #3BA4CE;
     --watson-green: #93BC58;
     --gray: #f0f0f0;
+    --darkgray: #818181;
+    --white: #ffffff;
+    --navbar-width: 200px;
 }
 
 html {
@@ -12,7 +15,7 @@ html {
 }
 
 body {
-    margin-left: 200px;
+    margin-left: var(--navbar-width);
     padding: 0px 12px 0px 12px;
     font: 20px "Lucida Grande", Helvetica, Arial, sans-serif;
     height: 100%;
@@ -29,14 +32,14 @@ body {
 
 .side-nav {
     height: 100%; /* Full-height: remove this if you want "auto" height */
-    width: 200px; /* Set the width of the sidebar */
+    width: var(--navbar-width); /* Set the width of the sidebar */
     position: fixed; /* Fixed Sidebar (stay in place on scroll) */
     z-index: 1; /* Stay on top */
     top: 0; /* Stay at the top */
     left: 0;
     background-color: #111; /* Black */
     overflow-x: hidden; /* Disable horizontal scroll */
-    padding-top: 20px;
+    /* padding-top: 20px; */ /* taken over by login widget now */
 }
 
 /* The navigation menu links */
@@ -47,9 +50,34 @@ body {
     padding: 3px 8px 3px 18px;
     text-decoration: none;
     font-size: 24px;
-    color: #818181;
+    color: var(--darkgray);
     display: block;
     text-align: left;
+}
+
+.login-widget {
+    background: var(--watson-blue);
+    padding: 20px 10px;
+}
+
+.login-widget label {
+    color: var(--white);
+    width: 100%;
+    font-size: 14px;
+}
+
+.login-widget input {
+    width: 92%;
+}
+
+.login-widget .login-title {
+    font-size: 30px;
+}
+
+.login-widget .login-button {
+    width: 100px;
+    display: flex;
+    justify-content: center;
 }
 
 /* When you mouse over the navigation links, change their color */
@@ -123,7 +151,7 @@ body {
 
 .message-item.plain .message-text span {
     float:left;
-    background: #f0f0f0;
+    background: var(--gray);
     border-radius: 12px;
     display: inline-block;
     padding: 8px;

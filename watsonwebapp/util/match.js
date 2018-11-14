@@ -7,7 +7,7 @@ var matched;
 var db = require('../../util/db.js');
 router.get('/', async function(req, res, next) {
     matched = findMatch(personalityArr)
-  });
+});
 function findMatch(personalityArr){
     var users = db.getAllUsers();
     var personalityArr1;
@@ -19,13 +19,13 @@ function findMatch(personalityArr){
         var totalDist = 0;
         var maxDist = Number.MIN_VALUE;
         for(i = 0; i<personalityArr.length; i++){
-            dist = Math.sqrt(Math.pow((personalityArr[i]-personalityArr1[i]),2));
+            dist = Math.pow((personalityArr[i]-personalityArr1[i]),2);
             if(dist >= maxDist){
                 maxDist = dist;
             }
             totalDist += dist;
+            totalDist = Math.sqrt(totalDist);
         }
-        totalDist = totalDist / maxDist;
         var userMap = new Map();
         userMap.set(totalDist, userName);
         var scores = [];
@@ -39,4 +39,3 @@ function findMatch(personalityArr){
     return topMatch;
 }
 module.exports = router;
-// module.exports = matched;

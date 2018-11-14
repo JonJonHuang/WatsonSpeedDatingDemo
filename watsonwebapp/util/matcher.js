@@ -1,4 +1,4 @@
-
+var personalityArr = require('../server/routes/personality.js');
 var UserMatcher = class {
   constructor() {
     this.userProfiles = [];
@@ -21,7 +21,35 @@ var UserMatcher = class {
       user[category] = value;
     }
   }
-
+  findMatch(personalityArr){
+        var personalityArr1;
+        for (let user of this.userProfiles) {
+            personalityArr1 = user.personality();
+            var userName = user.username();
+            var i;
+            var dist;
+            var totalDist = 0;
+            var maxDist = Number.MIN_VALUE;
+            for(i = 0; i<personalityArr.length; i++){
+                dist = Math.sqrt(Math.pow((personalityArr[i]-personalityArr1[i]),2));
+                if(dist >= maxDist){
+                    maxDist = dist;
+                }
+                totalDist += dist;
+            }
+            totalDist = totalDist / maxDist;
+            var userMap = new Map();
+            userMap.set(totalDist, userName);
+            var scores = [];
+            scores.push(totalDist);
+        }
+        scores.sort(function(a, b){return a - b});
+        var topMatch = [];
+        for(i=0;i<scores.length;i++){
+            topMatch.push(userMap.get(scores[i]));
+        }
+        return topMatch;
+    }
   findMatches(entities, groupsize) {
     var incompleteGroups = {};
     var completeGroups = [];

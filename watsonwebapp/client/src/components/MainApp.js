@@ -282,14 +282,14 @@ class MainApp extends Component {
   checkAuth = async (email) => {
     let response = await axios.post('/check-auth', {email: email});
     if (response.data.success) {
-      this.setAuth(true, email, response.data.username);
+      this.setAuth(true, email, response.data.username, response.data.messages);
     } else {
       this.setAuth(false, '', '')
     }
   }
 
-  setAuth = (authStatus, email, username) => {
-    let newState = {...this.state, auth: authStatus, username: username, wsfEmail: email};
+  setAuth = (authStatus, email, username, messages=[]) => {
+    let newState = {...this.state, auth: authStatus, username: username, wsfEmail: email, messages: messages};
     localStorage.wsfEmail = email;
     this.setState(newState);
   }

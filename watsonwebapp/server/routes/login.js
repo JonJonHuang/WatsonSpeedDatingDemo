@@ -9,7 +9,7 @@ router.post('/', async (req, res, next) => {
     let user = await dbUtils.getUser(req.body.email);
     req.session.loggedIn = true;
     req.session.userEmail = req.body.email;
-    res.send({success: success, username: user.username});
+    res.send({success: success, username: user.username, messages: user.messages});
   } else {
     res.send({success: false});
   }

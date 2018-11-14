@@ -8,7 +8,7 @@ var cors = require('cors');
 var indexRouter = require('./routes');
 var usersRouter = require('./routes/users');
 var conversationRouter = require('./routes/conversation');
-var matchRouter = require('./routes/match');
+// var matchRouter = require('./routes/match');
 var personalityRouter = require('./routes/personality');
 var authRouter = require('./routes/auth');
 var registerRouter = require('./routes/register');
@@ -41,7 +41,7 @@ app.use('/conversation', conversationRouter);
 app.use('/personality', personalityRouter);
 app.use('/check-auth', authRouter);
 app.use('/register', registerRouter);
-app.use('/matches', matchRouter);
+// app.use('/matches', matchRouter);
 app.use('/login', loginRouter);
 app.use('/logout', logoutRouter);
 

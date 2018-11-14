@@ -83,7 +83,9 @@ async function registerUser(email, username, password) {
             email: email,
             username: username,
             pwHash: hash,
-            messages: [],
+            messages: [
+                {senderId: 'Watson', text: 'Hi! I can help you find people with similar interests, such as a gaming partner, or just a friend in general.', isWatson: true},
+            ],
             personality: []
         });
         let success = await newUser.save().then(() => {
@@ -96,6 +98,7 @@ async function registerUser(email, username, password) {
     }
     return false;
 }
+
 /**
  * @para {*} email
  * @returns Promise<boolean> that removed user

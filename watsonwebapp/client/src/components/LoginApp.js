@@ -29,7 +29,7 @@ class LoginForm extends Component {
       let response = await axios.post('/login', {email: this.state.email, password: this.state.password});
       if (response.data.success) {
         // Change the auth state
-        this.props.setAuth(true, this.state.email, response.data.username);
+        this.props.setAuth(true, this.state.email, response.data.username, response.data.messages);
         this.setState(
           {num_wrong_logins: 0}
         )

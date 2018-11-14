@@ -1,13 +1,7 @@
-const express = require('express');
-const router = express.Router();
 var users = {};
-var personalityArr = require('../routes/personality.js');
-var matched;
-
 var db = require('../../util/db.js');
-router.get('/', async function(req, res, next) {
-    matched = findMatch(personalityArr)
-});
+
+/*
 function findMatch(personalityArr){
     var users = db.getAllUsers();
     var personalityArr1;
@@ -38,4 +32,5 @@ function findMatch(personalityArr){
     }
     return topMatch;
 }
-module.exports = router;
+*/
+module.exports = {};

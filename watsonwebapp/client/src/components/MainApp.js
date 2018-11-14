@@ -8,14 +8,11 @@ import HomeApp from './HomeApp';
 import ConversationApp from './ConversationApp';
 import PersonalityApp from './PersonalityApp';
 import LoginApp from './LoginApp';
+import RegisterApp from './RegisterApp';
 
-const DUMMY_DATA = [
-  {
-    senderId: "Watson",
-    text: "Hello, I'm Watson. How can I help you today?",
-    isWatson: true
-  }
-];
+const whiteText = {
+  color: 'white'
+}
 
 const PERSONALITIES_DEFAULT = [
   {
@@ -153,7 +150,7 @@ class MainApp extends Component {
     }
     this.state = {
       page: 1,
-      messages: DUMMY_DATA,
+      messages: '',
       current_input: '',
       personalities: personality_set,
       wsfEmail: '',
@@ -189,9 +186,11 @@ class MainApp extends Component {
             username={this.state.username} />
         )
         break;
-      /* case 4:
-        appToRender = ();
-        break; */
+      case 4:
+        appToRender = (
+          <RegisterApp />
+        );
+        break;
       case 5:
         // TO-DO: register user page
         // appToRender = <RegisterUser />
@@ -204,6 +203,7 @@ class MainApp extends Component {
     return (
       <React.Fragment>
         <div className="side-nav">
+          <p style={whiteText}>auth: {String(this.state.auth)}</p>
           <LoginApp
             current_user={this.state.username}
             setAuth={this.setAuth}
@@ -215,6 +215,10 @@ class MainApp extends Component {
           </button>
           <br/>
           <button
+            onClick={() => this.setState({page: 4})} >
+              Register
+          </button>
+          <br/><button
             onClick={() => this.setState({page: 2})} >
               Conversation with Watson
           </button>

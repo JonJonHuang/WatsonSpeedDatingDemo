@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 
-class LoginForm extends Component {
+class LoginApp extends Component {
 
   constructor(props) {
     super(props);
@@ -37,7 +37,6 @@ class LoginForm extends Component {
         this.setState(
           {num_wrong_logins: this.state.num_wrong_logins + 1}
         )
-        console.log("this.state.num_wrong_logins: " + this.state.num_wrong_logins);
       }
     }
   }
@@ -73,4 +72,4 @@ const DisplayWrongLoginAttempt = ({ num_wrong_logins }) =>  {
   }
 }
 
-export default LoginForm;
+export default LoginApp;

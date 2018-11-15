@@ -9,12 +9,16 @@ router.post('/', async (req, res, next) => {
   let errors = []
   if (!emailRegex.test(req.body.email)) {
     // User failed to provide a legal email address
-    res.send({success: false, error: 'User provided an invalid email address.'});
-  } else if (req.body.password.length < 8) {
-    res.send({success: false, error: 'Password '});
-  } else {
+    errors.push('User provided an invalid email address.');
+  }
+  if (req.body.password.length < 8) {
+    errors.push('Password shorter than 8 characters.');
+  }
+  if (errors.length === 0) {
     let success = await dbUtils.registerUser(req.body.email, req.body.username, req.body.password);
     res.send({success: success});
+  } else {
+    res.send({success: false, errors: errors});
   }
 });
 

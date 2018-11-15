@@ -39,7 +39,9 @@ router.post('/', async function(req, res, next) {
     res.send(watsonRes.output.text);
     db.setContext(req.body.email, watsonRes.context);
     await db.addUserMessage(req.body.email, user.username, req.body.text, false);
-    await db.addUserMessage(req.body.email, 'Watson', watsonRes.output.text, true);
+    for (text of watsonRes.output.text) {
+      await db.addUserMessage(req.body.email, 'Watson', text, true);
+    }
   });
 });
 

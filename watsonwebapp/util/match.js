@@ -6,7 +6,7 @@ function findMatch(userEmail){
     var personalityArr = db.getUser(userEmail).personality;
     var personalityArr1;
     for (var user in users) {
-        if (user.email.valueOf() !== userEmail.valueof()) {
+        if (user.email.localeCompare(userEmail) != 0) {
             personalityArr1 = user.personality;
             var userName = user.username;
             var i;

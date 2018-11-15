@@ -166,12 +166,6 @@ async function setPersonality(email, personalityArr) {
     });
 }
 
-async function getMessages(email) {
-    return UserModel.findOne({email: email},'messages').catch((err) => {
-        console.error(err);
-    });
-}
-
 module.exports = {
     getUser: getUser,
     registerUser: registerUser,
@@ -180,6 +174,5 @@ module.exports = {
     setContext: setContext,
     removeUser: removeUser,
     getAllUsers: getAllUsers,
-    setPersonality: setPersonality,
-    getMessages: getMessages
+    setPersonality: setPersonality
 };

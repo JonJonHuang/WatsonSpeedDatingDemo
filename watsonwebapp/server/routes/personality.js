@@ -11,18 +11,32 @@ var personalityInsight = new PersonalityInsightsV3({
 });
 
 var userMatcher = require('../../util/match.js');
-var matcher = new userMatcher;
 var personalityAnalyzer = require('../../util/personalityanalyzer.js');
 var pa = new personalityAnalyzer;
-
-router.get('/', async function(req,res,next){
-    let user = await db.getUser(req.body.email);
-    if (user) {
-      var personalityArr = pa.getPersonality(req.body.email);
-      console.log(personalityArr);
-    } else {
-        res.send(['There was an error.'])
-    } 
+var db = require('../../util/db.js');
+router.get('/', function(req,res,next){
+    db.getUser(req.query.email).then((user)=>{
+        if (user) {
+            console.log("A");  
+            pa.getPersonality(req.query.email).then(()=> {
+                db.getUser(req.query.email).then((user)=>{
+                    console.log(user.personality);
+                    res.send(user.personality);
+                    // for (let obj of personalityArr) {
+                    //     console.log(obj);
+                    // }
+                }).catch((err)=>{
+                    console.log(err);
+                });
+            }).catch((err)=>{
+                console.log(err);
+            });
+          } else {
+              res.send(['There was an error.'])
+          }
+    }).catch((err)=>{
+        console.log(err);
+    });
 })
 
 module.exports = router;

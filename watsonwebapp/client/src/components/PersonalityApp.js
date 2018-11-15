@@ -1,5 +1,5 @@
 import React from 'react';
-
+import axios from 'axios';
 class PersonalityApp extends React.Component {
   render() {
     var match_text = (
@@ -15,6 +15,9 @@ class PersonalityApp extends React.Component {
     var no_match_text = (
       <p>Still searching for a match for you...</p>
     )
+    this.sendGetRequest(this.props.email)
+    console.log("*****")
+    console.log(this.props.email)
     return(
       <div>
         <h1>Personality Chart</h1>
@@ -22,6 +25,10 @@ class PersonalityApp extends React.Component {
         {this.props.username==='stephmcflurry'? match_text : no_match_text }
       </div>
     )
+  }
+  async sendGetRequest(email) {
+    let response = await axios.get('/personality', {params: {email: email}} );
+    console.log(response.data);
   }
 }
 

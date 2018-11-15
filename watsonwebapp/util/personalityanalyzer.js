@@ -14,36 +14,43 @@ var PersonalityAnalyzer = class {
     }
 
     async getPersonality(email) {
-        var personalityVals = [];
-        db.getUser(email).then((user) => {
-            var userMessages = user.messages;
-            var userText = "";
-            for (let mObj of userMessages) {
-                if (!mObj.isWatson) {
-                    userText += mObj.text + " ";
+        return new Promise((res, rej) => {
+            var personalityVals = [];
+            db.getUser(email).then((user) => {
+                var userMessages = user.messages;
+                var userText = "";
+                for (let mObj of userMessages) {
+                    if (!mObj.isWatson) {
+                        userText += mObj.text + " ";
+                    }
                 }
-            }
-            var profileParams = {
-                content: userText,
-                'content_type':'text/plain',
-            };
-            var profile = personalityInsights.profile(profileParams, function(error,
-                profile) {
-                    if (error) {
-                        console.log(error);
-                    }
-                    for (let pt of profile['personality']) {
-                        personalityVals.push({name: pt['name'], val: pt['percentile']});
-                    }
-                    for (let need of profile['needs']) {
-                        personalityVals.push({name: need['name'], val: need['percentile']});
-                    }
-                    for (let value of profile['values']) {
-                        personalityVals.push({name: value['name'], val: value['percentile']});
-                    }
-                    db.setPersonality(email, personalityVals);
-                    //console.log(personalityVals);
-                });
+                var profileParams = {
+                    content: userText,
+                    'content_type':'text/plain',
+                };
+                var profile = personalityInsights.profile(profileParams, function(error,
+                    profile) {
+                        if (error) {
+                            console.log(error);
+                        }
+                        if (profile != null) {
+                          for (let pt of profile['personality']) {
+                              personalityVals.push({name: pt['name'], val: pt['percentile']});
+                          }
+                          for (let need of profile['needs']) {
+                              personalityVals.push({name: need['name'], val: need['percentile']});
+                          }
+                          for (let value of profile['values']) {
+                              personalityVals.push({name: value['name'], val: value['percentile']});
+                          }
+                          db.setPersonality(email, personalityVals);
+                          res();
+                          //console.log(personalityVals);
+                        } else {
+                          console.log("profile is null!")
+                        }
+                    });
+            });
         });
             
     }

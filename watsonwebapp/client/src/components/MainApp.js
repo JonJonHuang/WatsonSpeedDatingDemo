@@ -251,8 +251,13 @@ class MainApp extends Component {
   handleKeyPressXXX(e) {
     // 13 is the charCode for the Enter key
     if (e.charCode === 13 && this.state.current_input.length > 0) {
-      this.addMessageToList(this.state.username, this.state.current_input, false)
-      this.sendPostRequest()
+      if (this.state.current_input.length < 1000) {
+        this.addMessageToList(this.state.username, this.state.current_input, false)
+        this.sendPostRequest()
+      } else {
+        var errormessage = "Sorry, your message is too long! Please type less than 1000 characters!"
+        this.addMessageToList('Watson', errormessage, true);
+      }
     }
   }
 

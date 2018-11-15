@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const bcrypt = require('bcryptjs');
 
-//const uri = "mongodb+srv://Default:12345@watsonspeedfriending-2njuo.mongodb.net/test?retryWrites=true";
- const uri = "mongodb://localhost:27017";
+const uri = "mongodb+srv://Default:12345@watsonspeedfriending-2njuo.mongodb.net/test?retryWrites=true";
+// const uri = "mongodb://localhost:27017";
 // mongoose.connect(uri, (err) => {
 //     if (err)
 //         throw err;

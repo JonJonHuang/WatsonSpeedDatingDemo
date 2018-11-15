@@ -1,6 +1,14 @@
 import React from 'react';
 import axios from 'axios';
 class PersonalityApp extends React.Component {
+  
+  constructor() {
+    super();
+    this.state = {
+      perArr: []
+    }
+  }
+  
   render() {
     var match_text = (
       <>
@@ -15,21 +23,31 @@ class PersonalityApp extends React.Component {
     var no_match_text = (
       <p>Still searching for a match for you...</p>
     )
-    this.sendGetRequest(this.props.email)
+    console.log(this.props.personalities)
+    console.log(this.state.perArr)
     console.log("*****")
-    console.log(this.props.email)
     return(
       <div>
         <h1>Personality Chart</h1>
-        <Graph personalities={this.props.personalities} />
+        <Graph personalities={this.state.perArr} />
         {this.props.username==='stephmcflurry'? match_text : no_match_text }
       </div>
     )
   }
-  async sendGetRequest(email) {
+  
+  sendGetRequest = async (email) => {
     let response = await axios.get('/personality', {params: {email: email}} );
-    console.log(response.data);
+    let foo = response.data;
+    this.setState({
+      perArr: foo
+    })
+    console.log(this.state.perArr)
   }
+  
+  componentDidMount() {
+    this.sendGetRequest(this.props.email)
+  }
+  
 }
 
 class Graph extends React.Component {
@@ -62,8 +80,8 @@ class Graph extends React.Component {
     return personalities.map((personality) => {
       return (
         <Bar
-          percent={personality.percentage}
-          key={personality.personality}
+          percent={personality.val * 100}
+          key={personality.name}
         />
       )
     });
@@ -75,7 +93,7 @@ const BarTextContent = ( {personalities} ) => {
               {
                 personalities.map((item) => (
                   <div className="text">
-                    {item.personality}
+                    {item.name}
                   </div>
                 ))
               }

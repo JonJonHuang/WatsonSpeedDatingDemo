@@ -30,9 +30,11 @@ class LoginApp extends Component {
       if (response.data.success) {
         // Change the auth state
         this.props.setAuth(true, this.state.email, response.data.username, response.data.messages);
-        this.setState(
-          {num_wrong_logins: 0}
-        )
+        this.setState({
+          num_wrong_logins: 0,
+          email: '',
+          password: ''
+        })
       } else {
         this.setState(
           {num_wrong_logins: this.state.num_wrong_logins + 1}
@@ -42,20 +44,33 @@ class LoginApp extends Component {
   }
 
   render() {
-    return (
-      <form className='login-widget' onSubmit={this.submitHandler}>
-        <label className='login-title'>Login</label>
-        <br />
-        <label>Current user: {this.props.current_user}</label>
-        <br />
-        <label>Email*: <br /><input type='text' value={this.state.email} onChange={this.setEmail} /></label>
-        <br />
-        <label>Password*: <br /><input type='text' value={this.state.password} onChange={this.setPassword} /></label>
-        <br />
-        <DisplayWrongLoginAttempt num_wrong_logins={this.state.num_wrong_logins}/>
-        <input className='login-button' type='submit' value='Login' />
-      </form>
-    );
+    var toRender;
+    if (this.props.auth) {
+      return (
+        <form className='login-widget' onSubmit={this.props.logoffHandler} >
+          <label>Logged in as:</label>
+          <br />
+          <label className='login-title'>{this.props.current_user}</label>
+          <br />
+          <input className='logout-button' type='submit' value='Logoff' />
+        </form>
+      );
+    } else {
+      return (
+        <form className='login-widget' onSubmit={this.submitHandler}>
+          <label className='login-title'>Login</label>
+          <br />
+          <label>Current user: {this.props.current_user}</label>
+          <br />
+          <label>Email*: <br /><input type='text' value={this.state.email} onChange={this.setEmail} /></label>
+          <br />
+          <label>Password*: <br /><input type='text' value={this.state.password} onChange={this.setPassword} /></label>
+          <br />
+          <DisplayWrongLoginAttempt num_wrong_logins={this.state.num_wrong_logins}/>
+          <input className='login-button' type='submit' value='Login' />
+        </form>
+      );
+    }
   }
 
 }

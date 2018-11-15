@@ -76,7 +76,7 @@ class RegisterApp extends React.Component {
           <input style={inputStyle} type='text' value={this.state.password} onChange={this.setPassword} />
         </label>
         <br />
-        <input className='login-button' type='submit' value='Login' />
+        <input className='login-button' type='submit' value='Create User' />
       </form>
     );
   }

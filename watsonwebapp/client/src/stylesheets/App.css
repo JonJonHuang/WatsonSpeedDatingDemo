@@ -76,8 +76,12 @@ body {
 
 .login-widget .login-button {
     width: 100px;
-    display: flex;
-    justify-content: center;
+}
+
+.login-widget .logout-button {
+    width: 100px;
+    color: white;
+    background: red;
 }
 
 /* When you mouse over the navigation links, change their color */

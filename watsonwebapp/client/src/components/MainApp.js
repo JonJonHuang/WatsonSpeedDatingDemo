@@ -10,10 +10,6 @@ import PersonalityApp from './PersonalityApp';
 import LoginApp from './LoginApp';
 import RegisterApp from './RegisterApp';
 
-const whiteText = {
-  color: 'white'
-}
-
 const PERSONALITIES_DEFAULT = [
   {
     personality: 'Openness',
@@ -150,7 +146,7 @@ class MainApp extends Component {
     }
     this.state = {
       page: 1,
-      messages: '',
+      messages: [],
       current_input: '',
       personalities: personality_set,
       wsfEmail: '',
@@ -191,10 +187,6 @@ class MainApp extends Component {
           <RegisterApp />
         );
         break;
-      case 5:
-        // TO-DO: register user page
-        // appToRender = <RegisterUser />
-        break;
       case 1:
       default:
         appToRender = <HomeApp />
@@ -203,11 +195,12 @@ class MainApp extends Component {
     return (
       <React.Fragment>
         <div className="side-nav">
-          <p style={whiteText}>auth: {String(this.state.auth)}</p>
           <LoginApp
             current_user={this.state.username}
             setAuth={this.setAuth}
-            num_wrong_logins={this.state.num_wrong_logins} />
+            num_wrong_logins={this.state.num_wrong_logins}
+            auth={this.state.auth}
+            logoffHandler={this.logoffHandler} />
           <br />
           <button
             onClick={() => this.setState({page: 1})} >
@@ -219,12 +212,12 @@ class MainApp extends Component {
               Register
           </button>
           <br/><button
-            onClick={() => this.setState({page: 2})} >
+            onClick={() => this.handleMainAppPage(2) } >
               Conversation with Watson
           </button>
           <br/>
           <button
-            onClick={() => this.setState({page: 3})} >
+            onClick={() => this.handleMainAppPage(3) } >
               Personality and Matches
           </button>
         </div>
@@ -233,11 +226,18 @@ class MainApp extends Component {
         </div>
       </React.Fragment>
     )
-    /* <button
-            onClick={() => this.setState({page: 4})} >
-              Login
-          </button>
-          <br/> */
+  }
+  
+  handleMainAppPage(pageNumber) {
+    if (this.state.auth) {
+      this.setState({
+        page: pageNumber
+      })
+    } else if ((pageNumber != 3) && (pageNumber != 2)) {
+      this.setState({
+        page: pageNumber
+      })
+    }
   }
   
   handleChangeXXX(e) {
@@ -301,6 +301,19 @@ class MainApp extends Component {
     let newState = {...this.state, auth: authStatus, username: username, wsfEmail: email, messages: messages};
     localStorage.wsfEmail = email;
     this.setState(newState);
+  }
+
+  logoffHandler = (e) => {
+    e.preventDefault();
+    this.setState({
+      page: 1,
+      messages: [],
+      current_input: '',
+      wsfEmail: '',
+      username: '',
+      auth: false,
+      num_wrong_logins: 0
+    })
   }
 
 }

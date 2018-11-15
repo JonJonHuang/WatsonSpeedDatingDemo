@@ -12,29 +12,14 @@ class PersonalityApp extends React.Component {
   }
   
   render() {
-    var match_text = (
-      <>
-      <p>You have a match with jonjonH! You matched based on similarities of these qualities:</p>
-      <ul>
-        <li>Desire for Closeness</li>
-        <li>Desire for Challenge</li>
-        <li>Emotional Range</li>
-      </ul>
-      </>
-    )
-    var no_match_text = (
-      <p>Still searching for a match for you...</p>
-    )
     return(
       <div className='personality-app'>
-        <p>{this.state.errMsg}</p>
+        {this.state.errMsg ? <p>{this.state.errMsg}</p> : "" }
         <h1>Your Top Matches</h1>
         {this.displayTopMatches()}
         <h1>Personality Chart</h1>
         {this.displayPersonalityIntro()}
         <Graph personalities={this.state.perArr} />
-        <br />
-        <br />
       </div>
     )
   }

@@ -22,24 +22,25 @@ class RegisterApp extends React.Component {
       emailStatus: 'X',
       password: '',
       passwordStatus: 'X',
-      username: ''
+      username: '',
+      errMsg: ''
     }
   }
   
   setEmail = (e) => {
     if (this.emailRegex.test(e.target.value)) {
-      this.state.emailStatus = '\u2714';
+      this.setState({emailStatus: '\u2714'});
     } else {
-      this.state.emailStatus = 'X';
+      this.setState({emailStatus: 'X' });
     }
     this.setState({email: e.target.value});
   }
   
   setPassword = (e) => {
     if (e.target.value.length >= 8) {
-      this.state.passwordStatus = '\u2714';
+      this.setState({passwordStatus: '\u2714'});
     } else {
-      this.state.passwordStatus = 'X';
+      this.setState({passwordStatus: 'X'});
     }
     this.setState({password: e.target.value});
   }
@@ -49,10 +50,10 @@ class RegisterApp extends React.Component {
   }
   
   submitHandler = async (e) => {
+    e.preventDefault();
     if (this.state.passwordStatus !== '\u2714' || this.state.emailStatus !== '\u2714') {
       return;
     }
-    e.preventDefault();
     if (!this.state.email || !this.state.password || !this.state.username) {
       // User has failed to fill in one of the required inputs.
       console.log("missing parameters")
@@ -63,9 +64,14 @@ class RegisterApp extends React.Component {
                                                     password: this.state.password});
       if (response.data.success) {
         console.log("success!")
+        this.setState({
+          errMsg: "Successfully created new user! Please log in above."
+        })
       } else {
         console.log("failure!")
-        console.log(response.data.error)
+        this.setState({
+          errMsg: "Error: email already exists!"
+        })
       }
     }
   }
@@ -93,6 +99,7 @@ class RegisterApp extends React.Component {
           <input style={inputStyle} type='text' value={this.state.password} onChange={this.setPassword} />
           <p className='registration-criteria'>{this.state.emailStatus} Valid email</p>
           <p className='registration-criteria'>{this.state.passwordStatus} At least 8 characters</p>
+          <p>{this.state.errMsg}</p>
         </label>
         <br />
         <input className='login-button' type='submit' value='Create User' />

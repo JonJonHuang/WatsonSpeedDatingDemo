@@ -50,6 +50,7 @@ function SendMessageForm(props) {
       type="text"
       value={props.value}
       onChange={props.onChange()}
+      placeholder="Type in complete sentences here..."
       onKeyPress={props.onKeyPress()}
     />
   );

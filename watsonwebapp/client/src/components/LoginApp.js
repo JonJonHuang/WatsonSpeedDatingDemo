@@ -44,7 +44,6 @@ class LoginApp extends Component {
   }
 
   render() {
-    var toRender;
     if (this.props.auth) {
       return (
         <form className='login-widget' onSubmit={this.props.logoffHandler} >

@@ -234,7 +234,7 @@ class MainApp extends Component {
       this.setState({
         page: pageNumber
       })
-    } else if ((pageNumber != 3) && (pageNumber != 2)) {
+    } else if ((pageNumber !== 3) && (pageNumber !== 2)) {
       this.setState({
         page: pageNumber
       })

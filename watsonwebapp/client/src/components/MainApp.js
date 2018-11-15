@@ -183,7 +183,8 @@ class MainApp extends Component {
         appToRender = (
           <PersonalityApp
             personalities={this.state.personalities}
-            username={this.state.username} />
+            username={this.state.username}
+            email={this.state.wsfEmail} />
         )
         break;
       case 4:

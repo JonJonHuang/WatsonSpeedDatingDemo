@@ -1,5 +1,5 @@
 var users = {};
-var db = require('../../util/db.js');
+var db = require('./db.js');
 
 /*
 function findMatch(personalityArr){

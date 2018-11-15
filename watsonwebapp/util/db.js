@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const bcrypt = require('bcryptjs');
 
-const uri = "mongodb+srv://Default:12345@watsonspeedfriending-2njuo.mongodb.net/test?retryWrites=true";
-// const uri = "mongodb://localhost:27017";
+//const uri = "mongodb+srv://Default:12345@watsonspeedfriending-2njuo.mongodb.net/test?retryWrites=true";
+ const uri = "mongodb://localhost:27017";
 // mongoose.connect(uri, (err) => {
 //     if (err)
 //         throw err;
@@ -160,6 +160,18 @@ async function setContext(email, context) {
     });
 }
 
+async function setPersonality(email, personalityArr) {
+    return UserModel.updateOne({email: email}, {personality: personalityArr}).catch((err) => {
+        console.error(err);
+    });
+}
+
+async function getMessages(email) {
+    return UserModel.findOne({email: email},'messages').catch((err) => {
+        console.error(err);
+    });
+}
+
 module.exports = {
     getUser: getUser,
     registerUser: registerUser,
@@ -167,5 +179,7 @@ module.exports = {
     addUserMessage: addUserMessage,
     setContext: setContext,
     removeUser: removeUser,
-    getAllUsers: getAllUsers
+    getAllUsers: getAllUsers,
+    setPersonality: setPersonality,
+    getMessages: getMessages
 };

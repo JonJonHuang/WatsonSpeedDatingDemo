@@ -10,11 +10,19 @@ var personalityInsight = new PersonalityInsightsV3({
     url: 'https://gateway-wdc.watsonplatform.net/personality-insights/api'
 });
 
-// var userMatcher = require('../../util/matcher.js');
-// var mather = new userMatcher;
+var userMatcher = require('../../util/match.js');
+var matcher = new userMatcher;
+var personalityAnalyzer = require('../../util/personalityanalyzer.js');
+var pa = new personalityAnalyzer;
 
-router.post('/', function(req,res,next){
-
+router.get('/', async function(req,res,next){
+    let user = await db.getUser(req.body.email);
+    if (user) {
+      var personalityArr = pa.getPersonality(req.body.email);
+      console.log(personalityArr);
+    } else {
+        res.send(['There was an error.'])
+    } 
 })
 
 module.exports = router;

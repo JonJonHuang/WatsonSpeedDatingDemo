@@ -20,7 +20,7 @@ async function findMatch(userEmail) {
                     dist = Math.pow((personalityArr[i].val - tempUserArr[i].val), 2);
                     totalDist += dist;
                 }
-                userMap.set(Math.sqrt(totalDist), email);
+                userMap.set(Math.sqrt(totalDist), {email: email, username: user.username});
                 scores.push(Math.sqrt(totalDist));
                 console.log(email + " " + totalDist);
             }

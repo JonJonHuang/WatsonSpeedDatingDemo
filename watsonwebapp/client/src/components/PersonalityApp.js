@@ -6,7 +6,8 @@ class PersonalityApp extends React.Component {
     super();
     this.state = {
       perArr: [],
-      matchArr: []
+      matchArr: [],
+      errMsg: ''
     }
   }
   
@@ -25,19 +26,64 @@ class PersonalityApp extends React.Component {
       <p>Still searching for a match for you...</p>
     )
     return(
-      <div>
+      <div className='personality-app'>
+        <p>{this.state.errMsg}</p>
+        <h1>Your Top Matches</h1>
+        {this.displayTopMatches()}
         <h1>Personality Chart</h1>
+        {this.displayPersonalityIntro()}
         <Graph personalities={this.state.perArr} />
-        {this.props.username==='stephmcflurry'? match_text : no_match_text }
+        <br />
+        <br />
       </div>
+    )
+  }
+  
+  displayPersonalityIntro() {
+    const info = (
+      <p>
+        Below is a graph displaying your percentiles within
+        each personality category.
+      </p>
+    )
+    const noinfo = (
+      <p>
+        { this.state.errMsg ? "" : "Loading..."}
+      </p>
+    )
+    if (this.state.perArr.length > 0) {
+      return(info)
+    } else {
+      return(noinfo)
+    }
+  }
+
+  displayTopMatches() {
+    return(
+      <ol>
+        Your top matches, in order of similar interests, are:
+        {this.state.matchArr.map(item => {
+          return (
+            <React.Fragment>
+              <li>
+                {item.username}  |  email: {item.email}
+              </li>
+            </React.Fragment>
+          )
+          })}
+      </ol>
     )
   }
   
   sendGetRequest = async (email) => {
     let response = await axios.get('/personality', {params: {email: email}} );
-    let foo = response.data.personality;
+    if (response.data.message) {
+      this.setState({
+        errMsg: response.data.message
+      })
+    }
     this.setState({
-      perArr: foo
+      perArr: response.data.personality
     })
   }
 
@@ -47,7 +93,6 @@ class PersonalityApp extends React.Component {
     this.setState({
       matchArr: foo
     })
-    console.log(this.state.matchArr)
   }
   
   componentDidMount() {

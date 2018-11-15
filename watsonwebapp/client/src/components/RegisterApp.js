@@ -10,23 +10,37 @@ const inputStyle = {
 }
 
 class RegisterApp extends React.Component {
-  
+
+  emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+
   constructor() {
     super();
     
     this.state = {
       require_email_veri: false,
       email: '',
+      emailStatus: 'X',
       password: '',
+      passwordStatus: 'X',
       username: ''
     }
   }
   
   setEmail = (e) => {
+    if (this.emailRegex.test(e.target.value)) {
+      this.state.emailStatus = '\u2714';
+    } else {
+      this.state.emailStatus = 'X';
+    }
     this.setState({email: e.target.value});
   }
-
+  
   setPassword = (e) => {
+    if (e.target.value.length >= 8) {
+      this.state.passwordStatus = '\u2714';
+    } else {
+      this.state.passwordStatus = 'X';
+    }
     this.setState({password: e.target.value});
   }
   
@@ -35,6 +49,9 @@ class RegisterApp extends React.Component {
   }
   
   submitHandler = async (e) => {
+    if (this.state.passwordStatus !== '\u2714' || this.state.emailStatus !== '\u2714') {
+      return;
+    }
     e.preventDefault();
     if (!this.state.email || !this.state.password || !this.state.username) {
       // User has failed to fill in one of the required inputs.
@@ -74,6 +91,8 @@ class RegisterApp extends React.Component {
           Password*:
           <br />
           <input style={inputStyle} type='text' value={this.state.password} onChange={this.setPassword} />
+          <p class='registration-criteria'>{this.state.emailStatus} Valid email</p>
+          <p class='registration-criteria'>{this.state.passwordStatus} At least 8 characters</p>
         </label>
         <br />
         <input className='login-button' type='submit' value='Create User' />

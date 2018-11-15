@@ -35,7 +35,7 @@ class PersonalityApp extends React.Component {
   
   sendGetRequest = async (email) => {
     let response = await axios.get('/personality', {params: {email: email}} );
-    let foo = response.data;
+    let foo = response.data.personality;
     this.setState({
       perArr: foo
     })

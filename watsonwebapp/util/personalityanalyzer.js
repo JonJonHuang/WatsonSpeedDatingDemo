@@ -44,10 +44,10 @@ var PersonalityAnalyzer = class {
                               personalityVals.push({name: value['name'], val: value['percentile']});
                           }
                           db.setPersonality(email, personalityVals);
-                          res();
-                          //console.log(personalityVals);
+                          res(true);
                         } else {
-                          console.log("profile is null!")
+                            console.log("profile is null!")
+                            res(null);
                         }
                     });
             });

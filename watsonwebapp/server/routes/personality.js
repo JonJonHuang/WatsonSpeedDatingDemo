@@ -17,9 +17,13 @@ var db = require('../../util/db.js');
 router.get('/', function(req,res,next){
     db.getUser(req.query.email).then((user)=>{
         if (user) {
-            pa.getPersonality(req.query.email).then(()=> {
+            pa.getPersonality(req.query.email).then((result)=> {
+                if (result === null) {
+                    res.send({message: 'Not enough data to compute personality traits.', personality: []})
+                    return;
+                }
                 db.getUser(req.query.email).then((user)=>{
-                    res.send(user.personality);
+                    res.send({personality: user.personality});
                 }).catch((err)=>{
                     console.log(err);
                 });

@@ -24,9 +24,6 @@ class PersonalityApp extends React.Component {
     var no_match_text = (
       <p>Still searching for a match for you...</p>
     )
-    console.log(this.props.personalities)
-    console.log(this.state.perArr)
-    console.log("*****")
     return(
       <div>
         <h1>Personality Chart</h1>
@@ -42,7 +39,6 @@ class PersonalityApp extends React.Component {
     this.setState({
       perArr: foo
     })
-    console.log(this.state.perArr)
   }
 
   sendGetMatchRequest = async (email) => {

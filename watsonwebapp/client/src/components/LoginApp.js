@@ -63,7 +63,7 @@ class LoginApp extends Component {
           <br />
           <label>Email*: <br /><input type='text' value={this.state.email} onChange={this.setEmail} /></label>
           <br />
-          <label>Password*: <br /><input type='text' value={this.state.password} onChange={this.setPassword} /></label>
+          <label>Password*: <br /><input type='password' value={this.state.password} onChange={this.setPassword} /></label>
           <br />
           <DisplayWrongLoginAttempt num_wrong_logins={this.state.num_wrong_logins}/>
           <input className='login-button' type='submit' value='Login' />

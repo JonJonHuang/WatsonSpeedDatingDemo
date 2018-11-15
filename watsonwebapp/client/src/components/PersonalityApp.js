@@ -44,20 +44,26 @@ class PersonalityApp extends React.Component {
   }
 
   displayTopMatches() {
-    return(
-      <ol>
-        Your top matches, in order of similar interests, are:
-        {this.state.matchArr.map(item => {
-          return (
-            <React.Fragment>
-              <li>
-                {item.username}  |  email: {item.email}
-              </li>
-            </React.Fragment>
-          )
-          })}
-      </ol>
-    )
+    if (this.state.perArr.length > 0) {
+      return(
+        <ol>
+          Your top matches, in order of similar interests, are:
+          {this.state.matchArr.map(item => {
+            return (
+              <React.Fragment>
+                <li>
+                  {item.username}  |  email: {item.email}
+                </li>
+              </React.Fragment>
+            )
+            })}
+        </ol>
+      )
+    } else {
+      return(
+        <p>No matches found yet...</p>
+      )
+    }
   }
   
   sendGetRequest = async (email) => {

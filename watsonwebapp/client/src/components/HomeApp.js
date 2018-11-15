@@ -9,6 +9,9 @@ class HomeApp extends React.Component {
           <p>Welcome to Watson Speed Friending! This application was
               created by Jonathon Huang, Aakash Singh, Stephen Wan,
               and Ziheng Wei</p>
+          <p>The "Register" tab will allow the user to create a new
+              user account to be able to utilize this application.
+          </p>
           <p>The "Conversation with Watson" tab will start a conversation
               with Watson to begin collecting interests and personality
               information about the user.</p>

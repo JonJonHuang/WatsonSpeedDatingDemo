@@ -309,8 +309,9 @@ class MainApp extends Component {
     this.setState(newState);
   }
 
-  logoffHandler = (e) => {
+  logoffHandler = async (e) => {
     e.preventDefault();
+    await axios.post('/logout');
     this.setState({
       page: 1,
       messages: [],

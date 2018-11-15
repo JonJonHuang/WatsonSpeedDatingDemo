@@ -96,7 +96,7 @@ class RegisterApp extends React.Component {
         <label>
           Password*:
           <br />
-          <input style={inputStyle} type='text' value={this.state.password} onChange={this.setPassword} />
+          <input style={inputStyle} type='password' value={this.state.password} onChange={this.setPassword} />
           <p className='registration-criteria'>{this.state.emailStatus} Valid email</p>
           <p className='registration-criteria'>{this.state.passwordStatus} At least 8 characters</p>
           <p>{this.state.errMsg}</p>

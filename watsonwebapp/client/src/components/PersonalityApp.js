@@ -5,7 +5,8 @@ class PersonalityApp extends React.Component {
   constructor() {
     super();
     this.state = {
-      perArr: []
+      perArr: [],
+      matchArr: []
     }
   }
   
@@ -43,9 +44,19 @@ class PersonalityApp extends React.Component {
     })
     console.log(this.state.perArr)
   }
+
+  sendGetMatchRequest = async (email) => {
+    let response = await axios.get('/match', {params: {email: email}} );
+    let foo = response.data;
+    this.setState({
+      matchArr: foo
+    })
+    console.log(this.state.matchArr)
+  }
   
   componentDidMount() {
     this.sendGetRequest(this.props.email)
+    this.sendGetMatchRequest(this.props.email)
   }
   
 }

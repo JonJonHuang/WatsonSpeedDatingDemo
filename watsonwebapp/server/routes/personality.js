@@ -17,14 +17,9 @@ var db = require('../../util/db.js');
 router.get('/', function(req,res,next){
     db.getUser(req.query.email).then((user)=>{
         if (user) {
-            console.log("A");  
             pa.getPersonality(req.query.email).then(()=> {
                 db.getUser(req.query.email).then((user)=>{
-                    console.log(user.personality);
                     res.send(user.personality);
-                    // for (let obj of personalityArr) {
-                    //     console.log(obj);
-                    // }
                 }).catch((err)=>{
                     console.log(err);
                 });

@@ -12,27 +12,34 @@ async function findMatch(userEmail) {
         if (user.email.localeCompare(userEmail) != 0) {
             tempUserArr = user.personality;
             var email = user.email;
+            var profile = [user.username, email];
             var i;
             var dist;
             var totalDist = 0;
             if (tempUserArr.length > 0) {
                 for (i = 0; i < personalityArr.length; i++) {
                     dist = Math.pow((personalityArr[i].val - tempUserArr[i].val), 2);
+                    if (dist <= .05) {
+                        profile.push(personalityArr[i].name);
+                    }
                     totalDist += dist;
                 }
-                userMap.set(Math.sqrt(totalDist), {email: email, username: user.username});
+                userMap.set(Math.sqrt(totalDist), profile);
                 scores.push(Math.sqrt(totalDist));
-                console.log(email + " " + totalDist);
             }
         }
     }
-        scores.sort(function (a, b) {
-            return a - b
-        });
         var topMatch = [];
-        for (i = 0; i < scores.length; i++) {
-            topMatch.push(userMap.get(scores[i]));
+        var mapAsc = new Map([...userMap.entries()].sort());
+        for(var entry of mapAsc.entries()) {
+            topMatch.push(entry[1]);
         }
+        // scores.sort(function (a, b) {
+        //     return a - b
+        // });
+        // for (i = 0; i < scores.length; i++) {
+        //     topMatch.push(userMap.get(scores[i]));
+        // }
     
     console.log(topMatch);
     return topMatch;

@@ -52,7 +52,7 @@ class PersonalityApp extends React.Component {
             return (
               <React.Fragment>
                 <li>
-                  {item.username}  |  email: {item.email}
+                  {item[0]}  |  email: {item[1]}  |  Similar trait values for: {item[2]}, {item[3]}, {item[4]}
                 </li>
               </React.Fragment>
             )

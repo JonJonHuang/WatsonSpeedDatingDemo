@@ -45,14 +45,20 @@ class PersonalityApp extends React.Component {
 
   displayTopMatches() {
     if (this.state.perArr.length > 0) {
+      console.log(this.state.matchArr);
       return(
         <ol>
-          Your top matches, in order of similar interests, are:
+          Your top matches are shown below, in order of the overall dissimilarity score.
+          The dissimilarity score represents the sum of squared differences across all
+          personality traits. So, a lower dissimilarity score indicates a user with similar
+          personality percentile scores.
           {this.state.matchArr.map(item => {
             return (
               <React.Fragment>
                 <li>
-                    email: {item[1]}  |  user name: {item[0]}  |  Similar trait values for: {item[2]}, {item[3]}, {item[4]}
+                    <p>Username: {item[0][0]} ({item[0][1]})<br/>
+                    Overall dissimilarity: {Number((item[1]).toFixed(5))}<br/>
+                    Similar trait values for: {item[0][2]}, {item[0][3]}, {item[0][4]}</p>
                 </li>
               </React.Fragment>
             )
@@ -130,6 +136,14 @@ class Graph extends React.Component {
     });
   }
 }
+
+/*
+const TopMatchItem = ( {email, username, score, traits} ) => {
+  return(<div className = "top-match-item">
+          
+  </div>)
+}
+*/
 
 const BarTextContent = ( {personalities} ) => {
     return (<div className="bar-text-content">

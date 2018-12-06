@@ -32,7 +32,7 @@ async function findMatch(userEmail) {
         var topMatch = [];
         var mapAsc = new Map([...userMap.entries()].sort());
         for(var entry of mapAsc.entries()) {
-            topMatch.push(entry[1]);
+            topMatch.push( [entry[1], entry[0]] );
         }
         // scores.sort(function (a, b) {
         //     return a - b
